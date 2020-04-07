@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Library</title>
+    </head>
+    <body>
+        <h1>Library!</h1>
+        {% for book in book %}
+        <h2>{{ book.title }}</h2>
+        <p>By {{ book.author }} on {{book.yearOfPublication}}</p>
+        {% endfor %}
+    </body>
+</html>
