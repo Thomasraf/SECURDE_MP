@@ -1,0 +1,85 @@
+{% extends "library/base.html" %}
+{% block content %}
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            
+        }
+    </style>
+    <div class="content-section">
+        <form action="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Register!</legend>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>First Name: </label>
+                        <input type="text" name="firstName" size="50">
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Last Name: </label>
+                        <input type="text" name="lastName" size="50">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Username: </label>
+                        <input type="text" name="username" size="50">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Email: </label>
+                        <input type="email" name="email" size="50">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>I.D. Number: </label>
+                        <input type="number" name="idNum" size="50">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Password: </label>
+                        <input type="password" name="pass1" size="50">
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Confirm Password: </label>
+                        <input type="password" name="pass2" size="45">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Security Question: </label>
+                        <select id="securityQuestion">
+                            <option value="birthday">In what city did you have your first ever birthday party?</option>
+                            <option value="science">What is the last name of your Science class teacher in high school?</option>
+                            <option value="phone">Which company manufactured your first mobile phone?</option>
+                            <option value="hero">Who was your childhood hero?</option>
+                            <option value="vacation"></option>
+                        </select>
+                        <br>
+                        
+                        <input type="text" name="securityAnswer" size="50">
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account?<a class="ml-2" href="#">Sign In</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
