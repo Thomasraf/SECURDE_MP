@@ -8,9 +8,25 @@
             
         }
     </style>
-    <div class="content-section">
-        <form action="POST">
+    <div class="content-section"> 
+        <form method="POST">
             {% csrf_token %}
+            {{ form }}
+
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    Already Have An Account?<a class="ml-2" href="#">Sign In</a>
+                </small>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+            <!-- {% csrf_token %}
+            <form action="POST">
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Register!</legend>
                 <div class="row">
@@ -64,7 +80,7 @@
                             <option value="science">What is the last name of your Science class teacher in high school?</option>
                             <option value="phone">Which company manufactured your first mobile phone?</option>
                             <option value="hero">Who was your childhood hero?</option>
-                            <option value="vacation"></option>
+                            <option value="vacation">Where was your best family vacation?</option>
                         </select>
                         <br>
                         
@@ -75,11 +91,4 @@
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Sign Up</button>
             </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account?<a class="ml-2" href="#">Sign In</a>
-            </small>
-        </div>
-    </div>
-{% endblock content %}
+        </form> -->
