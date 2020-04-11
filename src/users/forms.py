@@ -38,11 +38,11 @@ class RegisterForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
     username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    password1 = forms.CharField(widget=forms.PasswordInput, label='Password')
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
+        password = self.cleaned_data.get('password1')
 
         if username and password:
             user = authenticate(username=username, password=password)
