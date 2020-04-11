@@ -20,9 +20,11 @@ from library import views as libraryView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', usersView.register, name="register"),
+    path('register/', usersView.userRegister, name="register"),
+    path('login/', usersView.userLogin, name="login"),
+    path('profile/', usersView.userProfile, name="profile"),
+    path('logout/', usersView.logout, name="logout"),
     path('home/', libraryView.home, name="library-home"),
     path('about/', libraryView.about, name="library-about"),
     path('', include('library.urls')),
-    path('', include("django.contrib.auth.urls")),
 ]
