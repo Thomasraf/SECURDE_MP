@@ -23,6 +23,7 @@ urlpatterns = [
     path('register/', usersView.userRegister, name="register"),
     path('login/', usersView.userLogin, name="login"),
     path('profile/', usersView.userProfile, name="profile"),
+    path('editPassword/', usersView.userChangePassword, name="editPassword"),
     path('logout/', usersView.userLogout, name="logout"),
     path('home/', libraryView.home, name="library-home"),
     path('about/', libraryView.about, name="library-about"),

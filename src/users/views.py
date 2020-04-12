@@ -6,6 +6,8 @@ from django.contrib.auth import (
     login,
     logout
 )
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 def userRegister(request):
@@ -45,8 +47,23 @@ def userLogin(request):
     return render(request, "login.html", context)
 
 def userProfile(request):
-    return render(request, 'profile.html')
+    context = {'user': request.user}
+    return render(request, 'profile.html', context)
 
 def userLogout(request):
     logout(request)
     return redirect('/')
+
+def userChangePassword(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data = request.POST, user = request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('/')
+        
+    else:
+        form = PasswordChangeForm(user = request.user)
+        context = {'form': form}
+        return render(request, 'changePassword.html', context)
