@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {%  block title %} Home {% endblock %}
 {% block content %}
-    {% for books in books %}
-    <article class="media content-section">
-        <div class="media-body">
-          <div class="article-metadata">
+{% for books in books %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
             <a class="mr-2" href="#">{{ books.author }}</a>
-            <small class="text-muted">{{ books.dateOfPublication }}</small>
-          </div>
-          <h2><a class="article-title" href="#">{{ books.title }}</a></h2>
+            <small class="text-muted">{{ books.year_of_pub }}</small>
         </div>
-    </article>
-    {% endfor %}
+        <h2><a class="article-title" href="#">{{ books.title }}</a></h2>
+        <a class="mr-2">Publisher: {{ books.publisher }}</a>
+    </div>
+</article>
+{% endfor %}
 {% endblock content %}

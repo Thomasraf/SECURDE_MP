@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Book
 
 # Create your views here.
 books = [
@@ -17,7 +18,7 @@ books = [
 
 def home(request):
     context = {
-        'books': books
+        'books': Book.objects.all()
     }
     return render(request, 'library/home.html', context)
 
