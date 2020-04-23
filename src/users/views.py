@@ -17,6 +17,8 @@ def userRegister(request):
         user = form.save(commit=False)
         password = form.cleaned_data.get('password1')
         user.set_password(password)
+        user.firstName = form.cleaned_data.get('firstName')
+        user.lastName = form.cleaned_data.get('lastName')
         user.save()
         new_user = authenticate(username=user.username, password=password)
         login(request, new_user)
