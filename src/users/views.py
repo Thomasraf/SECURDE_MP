@@ -11,25 +11,25 @@ from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 def userRegister(request):
-    next = request.GET.get('next')
-    form = RegisterForm(request.POST or None)
+    form = RegisterForm(request.POST)
     if form.is_valid():
-        user = form.save(commit=False)
-        password = form.cleaned_data.get('password1')
-        user.set_password(password)
-        user.firstName = form.cleaned_data.get('firstName')
-        user.lastName = form.cleaned_data.get('lastName')
+        user = form.save()
+        user.refresh_from_db()
+        user.profile.first_name = form.cleaned_data.get('first_name')
+        user.profile.last_name = form.cleaned_data.get('last_name')
+        user.profile.email = form.cleaned_data.get('email')
+        user.profile.id_num = form.cleaned_data.get('id_num')
+        user.profile.security_question = form.cleaned_data.get('security_question')
+        user.profile.security_answer = form.cleaned_data.get('security_answer')
         user.save()
-        new_user = authenticate(username=user.username, password=password)
-        login(request, new_user)
-        if next:
-            return redirect(next)
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
         return redirect('/')
-
-    context = {
-        'form': form,
-    }
-    return render(request, "register.html", context)
+    else:
+        form = RegisterForm()
+    return render(request, "register.html", {'form': form})
 
 def userLogin(request):
     next = request.GET.get('next')

@@ -27,5 +27,5 @@ urlpatterns = [
     path('logout/', usersView.userLogout, name="logout"),
     path('home/', libraryView.home, name="library-home"),
     path('about/', libraryView.about, name="library-about"),
-    path('', include('library.urls')),
+    path('/', include('library.urls')),
 ]

@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
-User = get_user_model()
 
 QUESTION_CHOICES = [
     ('city', 'In what city did you have your first ever birthday party?'),
@@ -12,19 +13,19 @@ QUESTION_CHOICES = [
     ('vacation', 'Where was your best family vacation?'),
 ]
 
-class RegisterForm(forms.ModelForm):
+class RegisterForm(UserCreationForm):
     email               = forms.EmailField(label='Email Address')
-    firstName           = forms.CharField(max_length=15, label='First Name')
-    lastName            = forms.CharField(max_length=10, label='Last Name')
+    first_name           = forms.CharField(max_length=15, label='First Name')
+    last_name            = forms.CharField(max_length=10, label='Last Name')
     password1           = forms.CharField(widget=forms.PasswordInput, label='Password')
     password2           = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
-    idNum               = forms.IntegerField(label="I.D. Number")
-    securityQuestion    = forms.CharField(label="Choose A Security Question", widget=forms.Select(choices=QUESTION_CHOICES))
-    securityAnswer      = forms.CharField(max_length=20, label="Security Answer")
+    id_num               = forms.IntegerField(label="I.D. Number")
+    security_question    = forms.CharField(label="Choose A Security Question", widget=forms.Select(choices=QUESTION_CHOICES))
+    security_answer      = forms.CharField(max_length=20, label="Security Answer")
 
     class Meta:
         model = User
-        fields = ["firstName", "lastName", "username", "email", "password1", "password2", "idNum", "securityQuestion", "securityAnswer"]
+        fields = ["first_name", "last_name", "username", "email", "password1", "password2", "id_num", "security_question", "security_answer"]
 
     def clean_data(self, *args, **kwargs):
         username_qs = User.objects.filter(username=username)
