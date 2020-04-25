@@ -26,7 +26,7 @@ def userRegister(request):
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
         login(request, user)
-        return redirect('/')
+        return redirect('library-home')
     else:
         form = RegisterForm()
     return render(request, "register.html", {'form': form})
@@ -41,7 +41,7 @@ def userLogin(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('/')
+        return redirect('/home')
 
     context = {
         'form': form,
@@ -53,7 +53,7 @@ def userProfile(request):
     return render(request, 'profile.html', context)
 
 def userLogout(request):
-    logout(request)
+    auth.logout(request)
     return redirect('/')
 
 def userChangePassword(request):
