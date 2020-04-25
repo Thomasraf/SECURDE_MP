@@ -35,7 +35,7 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("This account has already been registered")
         if password1 != password1:
             raise forms.ValidationError("Password do not match")
-        return super(RegisterForm, self).clean(*args, **kwargs)
+        return user
 
 class LoginForm(forms.Form):
     username = forms.CharField()
