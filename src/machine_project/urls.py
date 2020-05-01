@@ -20,12 +20,12 @@ from library import views as libraryView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', usersView.userRegister, name="register"),
-    path('login/', usersView.userLogin, name="login"),
-    path('profile/', usersView.userProfile, name="profile"),
-    path('editPassword/', usersView.userChangePassword, name="editPassword"),
-    path('logout/', usersView.userLogout, name="logout"),
-    path('home/', libraryView.home, name="library-home"),
+    path('register/', libraryView.accountRegister, name="register"),
+    path('login/', libraryView.accountLogin, name="login"),
+    path('profile/', libraryView.accountProfile, name="profile"),
+    path('editPassword/', libraryView.accountChangePassword, name="editPassword"),
+    path('logout/', libraryView.accountLogout, name="logout"),
     path('about/', libraryView.about, name="library-about"),
     path('catalog/', libraryView.home, name="library-home"),
+    path('', libraryView.home, name="library-home"),
 ]
