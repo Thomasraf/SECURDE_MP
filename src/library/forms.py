@@ -10,7 +10,7 @@ class RegisterForm(forms.ModelForm):
         fields = ["first_name", "last_name", "username", "email", "password", "id_num", "security_question", "security_answer"]
         widget = {'role': forms.HiddenInput()}
 
-    def clean_username(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         username = self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
         userInQuestion = Account.objects.filter(username=username)
@@ -19,7 +19,7 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Username is already taken")
         if emailInQuestion.exists():
             raise forms.ValidationError("Email is already in use")
-        return username
+        return super(RegisterForm, self).clean(*args, **kwargs)
 
 class LoginForm(forms.Form):
     username = forms.CharField()

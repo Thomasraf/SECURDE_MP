@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Book
 from .forms import RegisterForm, LoginForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 
 # Create your views here.
@@ -28,11 +28,11 @@ def home(request):
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
-def accountRegister(request):
-    form = RegisterForm(request.POST)
+def accountRegister(request): 
+    next = request.GET.get('next')
+    form = RegisterForm(request.POST or None)
     if form.is_valid():
-        account = form.save()
-        account.refresh_from_db()
+        account = form.save(commit=False)
         account.first_name = form.cleaned_data.get('first_name')
         account.last_name = form.cleaned_data.get('last_name')
         account.email = form.cleaned_data.get('email')
@@ -42,12 +42,16 @@ def accountRegister(request):
         account.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(request, user)
+        account = authenticate(username=username, password=password)
+        login(request, account, backend='django.contrib.auth.backends.ModelBackend')
+        if next:
+            return redirect(next)
         return redirect('library-home')
-    else:
-        form = RegisterForm()
-    return render(request, "register.html", {'form': form})
+    
+    context = {
+        'form': form,
+    }
+    return render(request, "register.html", context)
 
 def accountLogin(request):
     form = LoginForm(request.POST)

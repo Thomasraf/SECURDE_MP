@@ -37,12 +37,9 @@ class Account(models.Model):
     email             = models.EmailField(max_length=150)
     password          = models.CharField(max_length=100, default=None)
     id_num            = models.IntegerField()
-    role              = models.CharField(max_length=200, choices=ROLES, default='city')
+    role              = models.CharField(max_length=200, choices=ROLES, default='regular')
     security_question = models.CharField(max_length=200, choices=QUESTION_CHOICES, default='city')
     security_answer   = models.CharField(max_length=200)
-
-    class Meta:
-        ordering = ['first_name', 'last_name']
 
     def __str__(self):
         return f'{self.first_name} ({self.last_name})'
