@@ -29,7 +29,8 @@ def accountRegister(request):
                 username = username, 
                 password = hashed_password
             )
-            account = authenticate(username=username, password=hashed_password)
+            account = authenticate(request, username=username, password=hashed_password, backend='django.contrib.auth.backends.ModelBackend')
+            print(account)
             login(request, account)
             return redirect('library-home')
     else:
