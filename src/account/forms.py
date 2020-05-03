@@ -1,8 +1,10 @@
 from django import forms
 from .models import Account
+from django.core.validators import RegexValidator
 
 class RegisterForm(forms.ModelForm):
-    password           = forms.CharField(min_length=6,widget=forms.PasswordInput)
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    password           = forms.CharField(min_length=6,widget=forms.PasswordInput, validators=[alphanumeric])
     id_num             = forms.IntegerField(label="I.D. Number")
     
     class Meta:

@@ -10,25 +10,6 @@ from django.contrib.auth.hashers import make_password
 def accountRegister(request): 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
-        # if form.is_valid():
-        #     account = form.save()
-        #     account.first_name = form.cleaned_data.get('first_name')
-        #     account.last_name = form.cleaned_data.get('last_name')
-        #     account.email = form.cleaned_data.get('email')
-        #     account.id_num = form.cleaned_data.get('id_num')
-        #     account.security_question = form.cleaned_data.get('security_question')
-        #     account.security_answer = form.cleaned_data.get('security_answer')
-        #     account.save()
-        #     username = form.cleaned_data.get('username')
-        #     password = form.cleaned_data.get('password')
-        #     hashed_password = make_password(password)
-        #     user = authenticate(request, username=username, password=hashed_password)
-        #     print(user)
-        #     print(username)
-        #     print(password)
-        #     print(hashed_password)
-        #     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        #     return redirect('library-home')
         if form.is_valid():
             first_name = request.POST["first_name"]
             last_name = request.POST["last_name"]
@@ -48,8 +29,8 @@ def accountRegister(request):
                 username = username, 
                 password = hashed_password
             )
-            user = authenticate(request, username=username, password=hashed_password)
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            account = authenticate(username=username, password=hashed_password)
+            login(request, account)
             return redirect('library-home')
     else:
         form = RegisterForm()
