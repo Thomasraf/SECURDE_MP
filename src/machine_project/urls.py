@@ -16,14 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from library import views as libraryView
+from account import views as accountView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', libraryView.accountRegister, name="register"),
-    path('login/', libraryView.accountLogin, name="login"),
-    path('profile/', libraryView.accountProfile, name="profile"),
-    path('editPassword/', libraryView.accountChangePassword, name="editPassword"),
-    path('logout/', libraryView.accountLogout, name="logout"),
+    path('register/', accountView.accountRegister, name="register"),
+    path('login/', accountView.accountLogin, name="login"),
+    path('profile/', accountView.accountProfile, name="profile"),
+    path('editPassword/', accountView.accountChangePassword, name="editPassword"),
+    path('logout/', accountView.accountLogout, name="logout"),
     path('about/', libraryView.about, name="library-about"),
     path('catalog/', libraryView.home, name="library-home"),
     path('', libraryView.home, name="library-home"),

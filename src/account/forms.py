@@ -2,7 +2,7 @@ from django import forms
 from .models import Account
 
 class RegisterForm(forms.ModelForm):
-    password           = forms.CharField(widget=forms.PasswordInput)
+    password           = forms.CharField(min_length=6,widget=forms.PasswordInput)
     id_num             = forms.IntegerField(label="I.D. Number")
     
     class Meta:
@@ -11,6 +11,7 @@ class RegisterForm(forms.ModelForm):
         widget = {'role': forms.HiddenInput()}
 
     def clean(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
         username = self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
         userInQuestion = Account.objects.filter(username=username)
@@ -19,7 +20,8 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Username is already taken")
         if emailInQuestion.exists():
             raise forms.ValidationError("Email is already in use")
-        return super(RegisterForm, self).clean(*args, **kwargs)
+        else:
+            return cleaned_data
 
 class LoginForm(forms.Form):
     username = forms.CharField()
