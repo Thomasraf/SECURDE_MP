@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, LoginForm
-from .models import Account, Book
+from .forms import *
+from .models import Account, Book, Review
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.hashers import make_password
@@ -93,3 +93,14 @@ def accountChangePassword(request):
         form = PasswordChangeForm(user = request.user)
         context = {'form': form}
         return render(request, 'changePassword.html', context)
+
+#we need a book view
+#def book_detail(request, id, slug):
+#    book = get_object_or_404(Book, id=id, slug=slug)
+#    reviews = Review.objects.filter(book=book).order_by('-id')
+#    
+#    context = {
+#        'book': book,
+#       'reviews': reviews,
+#    }
+#    return render(request, 'library/book_detail')
