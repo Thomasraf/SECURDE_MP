@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account, Review, Book
+from .models import User, Review, Book
 from django.core.validators import RegexValidator
 
 class RegisterForm(forms.ModelForm):
@@ -8,7 +8,7 @@ class RegisterForm(forms.ModelForm):
     id_num             = forms.IntegerField(label="I.D. Number")
     
     class Meta:
-        model = Account
+        model = User
         fields = ["first_name", "last_name", "username", "email", "password", "id_num", "security_question", "security_answer"]
         widget = {'role': forms.HiddenInput()}
 
@@ -16,8 +16,8 @@ class RegisterForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
         username = self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
-        userInQuestion = Account.objects.filter(username=username)
-        emailInQuestion = Account.objects.filter(email=email)
+        userInQuestion = User.objects.filter(username=username)
+        emailInQuestion = User.objects.filter(email=email)
         if userInQuestion.exists():
             raise forms.ValidationError("Username is already taken")
         if emailInQuestion.exists():
@@ -29,7 +29,7 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
-        model= Account
+        model= User
         fields = ["username", "password"]
 
 class AddBookForm(forms.ModelForm):
