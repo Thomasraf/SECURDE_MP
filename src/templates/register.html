@@ -5,7 +5,7 @@
 {% block content %}
     <form class="form-group" method="POST">
         {% csrf_token %}
-        <h1>Xavier's Library</h1>
+        <h1>Xavier's Library Registration Page</h1>
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Register</button>
     </form>

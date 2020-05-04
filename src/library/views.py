@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import Account, Book, Review
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.hashers import make_password
@@ -52,10 +53,7 @@ def accountRegister(request):
                 username = username, 
                 password = hashed_password
             )
-            account = authenticate(request, username=username, password=hashed_password, backend='django.contrib.auth.backends.ModelBackend')
-            print(account)
-            login(request, account)
-            return redirect('library-home')
+            return redirect('login')
     else:
         form = RegisterForm()
     return render(request, "register.html", {'form':form})
@@ -66,10 +64,11 @@ def accountLogin(request):
         username = request.POST["username"]
         password = request.POST['password']
         account = authenticate(username=username, password=password)
-        login(request, user)
-        return redirect('library-home')
-    else:
-        form = LoginForm()
+        if account is not None:
+            login(request, account)
+            return redirect('library-home')
+        else:
+            form = LoginForm()
     return render(request, "login.html", {'form': form})
 
 def accountProfile(request):
