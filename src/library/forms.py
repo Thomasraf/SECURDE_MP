@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account, Review
+from .models import Account, Review, Book
 from django.core.validators import RegexValidator
 
 class RegisterForm(forms.ModelForm):
@@ -31,6 +31,14 @@ class LoginForm(forms.Form):
     class Meta:
         model= Account
         fields = ["username", "password"]
+
+class AddBookForm(forms.ModelForm):
+    year_of_pub =forms.CharField(label="Year Of Publication")
+    dewey_call =forms.CharField(label="Dewey Decimal System")
+    
+    class Meta:
+        model = Book
+        fields = ["title", "author", "publisher", "year_of_pub", "description", "ISBN", "dewey_call"]
         
 class ReviewForm(forms.ModelForm):
     class Meta:

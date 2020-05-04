@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{%  block title %} About {% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>{{ books.title}}</h1>
+</div>
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ books.author }}</a>
+            <small class="text-muted">{{ books.year_of_pub }}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ books.title }}</a></h2>
+        <a class="mr-2">Publisher: {{ books.publisher }}</a>
+    </div>
+</article>
+{% endblock content %}

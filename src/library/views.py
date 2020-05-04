@@ -31,6 +31,33 @@ def home(request):
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
+def addBook(request):
+    if request.method == 'POST':
+        form = AddBookForm(request.POST)
+        if form.is_valid():
+            title = request.POST["title"]
+            author = request.POST["author"]
+            publisher = request.POST["publisher"]
+            year_of_pub = request.POST["year_of_pub"]
+            description = request.POST["description"]
+            ISBN = request.POST["ISBN"]
+            dewey_call = request.POST["dewey_call"]
+            Book.objects.create(
+                title = title,
+                author = author,
+                publisher = publisher,
+                year_of_pub = year_of_pub,
+                description = description,
+                ISBN = ISBN,
+                dewey_call = dewey_call
+            )
+            return redirect('library-home')
+    else:
+        form = AddBookForm()
+    return render(request, "addBook.html", {'form': form})
+
+
+
 def accountRegister(request): 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
