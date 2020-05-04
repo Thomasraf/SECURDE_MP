@@ -6,9 +6,25 @@
 </div>
 <article class="media content-section">
     <div class="media-body">
-        <h3>{{ details.author}}</h3>
-        <h3>{{ details.publisher}}</h3>
+        <h3>Author: {{ details.author}}</h3>
+        <h4>Published By: {{ details.publisher}}</h4>
         <p>{{ details.description}}</p>
     </div>
 </article>
+
+
 {% endblock content %}
+
+
+<br><br>
+<hr>
+<div class="main-reviews-section">
+    {{ reviews.count }} Review{{ reviews|pluralize }}
+    {% for review in reviews %}
+    <blockquote class="blockquote">
+        <p class="mb-0">{{ review.content }}</p>
+        <footer class="blockquote-footer">Review By: <cite title="Source Title">{{ review.user|capfirst }}</cite></footer>
+    </blockquote>
+    {% endfor %}
+
+</div>
