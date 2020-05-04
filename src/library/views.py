@@ -57,9 +57,16 @@ def addBook(request):
     return render(request, "addBook.html", {'form': form})
 
 def viewBook(request, ISBN):
-    books = Book.objects.filter(ISBN=ISBN)
+    book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
-    context = {'details': details, 'books': books}
+    reviews = Review.objects.filter(book=book)
+    
+    
+    context = {
+        'details': details, 
+        'book': book,
+        'reviews': reviews
+    }
     return render(request, "book.html", context)
 
 def accountRegister(request): 

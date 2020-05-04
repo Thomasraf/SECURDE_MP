@@ -12,7 +12,7 @@ class Book(models.Model):
     ISBN = models.IntegerField()
     dewey_call = models.CharField(max_length=3)
     reserved = models.BooleanField(default=False)
-    reviews = models.TextField() #needs to be changed
+    #reviews = models.TextField() #needs to be changed
     
     def __str__(self):
         return self.title
