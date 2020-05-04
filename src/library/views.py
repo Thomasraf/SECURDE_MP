@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import Account, Book, Review
 from django.contrib.auth.models import User
@@ -56,7 +56,11 @@ def addBook(request):
         form = AddBookForm()
     return render(request, "addBook.html", {'form': form})
 
-
+def viewBook(request, ISBN):
+    books = Book.objects.filter(ISBN=ISBN)
+    details = get_object_or_404(Book, ISBN=ISBN)
+    context = {'details': details, 'books': books}
+    return render(request, "book.html", context)
 
 def accountRegister(request): 
     if request.method == 'POST':

@@ -27,5 +27,6 @@ urlpatterns = [
     path('about/', libraryView.about, name="library-about"),
     path('catalog/', libraryView.home, name="library-home"),
     path('addBook/', libraryView.addBook, name="addBook"),
+    path('books/<int:ISBN>', libraryView.viewBook, name="viewBook"),
     path('', libraryView.home, name="library-home"),
 ]

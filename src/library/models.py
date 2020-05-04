@@ -9,7 +9,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=100)
     year_of_pub = models.IntegerField()
     description = models.TextField()
-    ISBN = models.CharField(max_length=17)
+    ISBN = models.IntegerField()
     dewey_call = models.CharField(max_length=3)
     reserved = models.BooleanField(default=False)
     reviews = models.TextField() #needs to be changed
