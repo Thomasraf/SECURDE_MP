@@ -51,4 +51,4 @@ class Review(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return '{}-{}'.format(self.post.title, str(self.account.username))
+        return '{}-{}'.format(self.book.title, str(self.account.username))

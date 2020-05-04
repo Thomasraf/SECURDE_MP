@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account
+from .models import Account, Review
 from django.core.validators import RegexValidator
 
 class RegisterForm(forms.ModelForm):
@@ -43,3 +43,8 @@ class LoginForm(forms.Form):
                 if not user.check_password(password):
                     raise forms.ValidationError('Incorrect Password')
             return username
+        
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('content',)
