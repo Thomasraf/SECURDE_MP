@@ -63,9 +63,9 @@ def accountRegister(request):
 def accountLogin(request):
     form = LoginForm(request.POST)
     if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
+        username = request.POST["username"]
+        password = request.POST['password']
+        account = authenticate(username=username, password=password)
         login(request, user)
         return redirect('library-home')
     else:
