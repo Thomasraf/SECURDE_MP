@@ -123,14 +123,14 @@ def accountLogout(request):
 
 def accountChangePassword(request):
     user = User.objects.filter(first_name = request.user.first_name)
-    details = get_object_or_404(Book, ISBN=ISBN)
+    details = get_object_or_404(User, first_name = request.user.first_name)
     if request.method == 'POST':
         form = PasswordChangeForm(request.POST)
         if form.is_valid():
-            new_password    = request.POST["new_password"]
             security_answer = request.POST["security_answer"]
             if security_answer == request.user.security_answer:
-                user.set_password(new_password)
+                details.set_password(request.POST["new_password"])
+                details.save()
             return redirect('library-home')
     else:
         form = PasswordChangeForm()
