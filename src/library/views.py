@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
-from .models import User, Book, Review
+from .models import Book, Review
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 # Create your views here.
@@ -81,16 +83,18 @@ def accountRegister(request):
             security_answer = request.POST["security_answer"]
             username = request.POST["username"]
             hashed_password = make_password(request.POST["password"])
-            Account.objects.create(
+            user = User.objects.create_user(
                 first_name = first_name,
                 last_name = last_name,
                 email = email,
                 id_num = id_num,
                 security_question = security_question,
+                role = 'regular',
                 security_answer = security_answer,
                 username = username, 
                 password = hashed_password
             )
+            user.save()
             return redirect('login')
     else:
         form = RegisterForm()

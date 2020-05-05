@@ -9,21 +9,8 @@ class RegisterForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "email", "password", "id_num", "security_question", "security_answer"]
+        fields = ["first_name", "last_name", "username", "email", "id_num", "security_question", "security_answer"]
         widget = {'role': forms.HiddenInput()}
-
-    def clean(self, *args, **kwargs):
-        cleaned_data = self.cleaned_data
-        username = self.cleaned_data.get('username')
-        email = self.cleaned_data.get('email')
-        userInQuestion = User.objects.filter(username=username)
-        emailInQuestion = User.objects.filter(email=email)
-        if userInQuestion.exists():
-            raise forms.ValidationError("Username is already taken")
-        if emailInQuestion.exists():
-            raise forms.ValidationError("Email is already in use")
-        else:
-            return cleaned_data
 
 class LoginForm(forms.Form):
     username = forms.CharField()
