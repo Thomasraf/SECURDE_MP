@@ -131,7 +131,9 @@ def accountChangePassword(request):
             if security_answer == request.user.security_answer:
                 details.set_password(request.POST["new_password"])
                 details.save()
-            return redirect('library-home')
+                updated_user = authenticate(request, email=request.user.email, password=request.POST["new_password"])
+                login(request, updated_user)
+                return redirect('library-home')
     else:
         form = PasswordChangeForm()
     return render(request, 'changePassword.html', {'form': form})
