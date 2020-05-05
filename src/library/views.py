@@ -112,21 +112,6 @@ def accountLogin(request):
     else:
         form = LoginForm()
     return render(request, "login.html", {'form':form})
-    # form = LoginForm(request.POST)
-    # if form.is_valid():
-    #     email = request.POST["email"]
-    #     password = request.POST['password']
-    #     user = authenticate(request,email=email, password=password)
-    #     if user is not None:
-    #         login(request, user)
-    #         return redirect('library-home')
-    #         print('worked')
-    #     else:
-    #         form = LoginForm()
-    #         print('Did Not Work')
-    #         print(email)
-    #         print(password)
-    # return render(request, "login.html", {'form': form})
 
 def accountProfile(request):
     context = {'user': request.user}
@@ -137,18 +122,19 @@ def accountLogout(request):
     return redirect('library-home')
 
 def accountChangePassword(request):
+    user = User.objects.filter(first_name = request.user.first_name)
+    details = get_object_or_404(Book, ISBN=ISBN)
     if request.method == 'POST':
-        form = PasswordChangeForm(data = request.POST, user = request.user)
-
+        form = PasswordChangeForm(request.POST)
         if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect('/')
-        
+            new_password    = request.POST["new_password"]
+            security_answer = request.POST["security_answer"]
+            if security_answer == request.user.security_answer:
+                user.set_password(new_password)
+            return redirect('library-home')
     else:
-        form = PasswordChangeForm(user = request.user)
-        context = {'form': form}
-        return render(request, 'changePassword.html', context)
+        form = PasswordChangeForm()
+    return render(request, 'changePassword.html', {'form': form})
 
 #we need a book view
 #def book_detail(request, id, slug):

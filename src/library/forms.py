@@ -26,7 +26,15 @@ class AddBookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ["title", "author", "publisher", "year_of_pub", "description", "ISBN", "dewey_call"]
-        
+
+class PasswordChangeForm(forms.ModelForm):
+    alphanumeric            = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    new_password            = forms.CharField(min_length=6,widget=forms.PasswordInput, validators=[alphanumeric])
+    
+    class Meta:
+        model = User
+        fields = ["security_answer"]
+    
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
