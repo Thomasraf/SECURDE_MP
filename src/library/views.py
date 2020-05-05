@@ -100,21 +100,33 @@ def accountRegister(request):
     return render(request, "register.html", {'form':form})
 
 def accountLogin(request):
-    form = LoginForm(request.POST)
-    if form.is_valid():
-        email = request.POST["email"]
-        password = request.POST['password']
-        user = authenticate(request,email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('library-home')
-            print('worked')
-        else:
-            form = LoginForm()
-            print('Did Not Work')
-            print(email)
-            print(password)
-    return render(request, "login.html", {'form': form})
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email       = request.POST["email"]
+            password    = request.POST["password"]
+            user        = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('library-home')
+    else:
+        form = LoginForm()
+    return render(request, "login.html", {'form':form})
+    # form = LoginForm(request.POST)
+    # if form.is_valid():
+    #     email = request.POST["email"]
+    #     password = request.POST['password']
+    #     user = authenticate(request,email=email, password=password)
+    #     if user is not None:
+    #         login(request, user)
+    #         return redirect('library-home')
+    #         print('worked')
+    #     else:
+    #         form = LoginForm()
+    #         print('Did Not Work')
+    #         print(email)
+    #         print(password)
+    # return render(request, "login.html", {'form': form})
 
 def accountProfile(request):
     context = {'user': request.user}
