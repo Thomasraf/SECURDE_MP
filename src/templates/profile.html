@@ -6,7 +6,7 @@
     <form class="form-group" method="POST">
         {% csrf_token %}
         <h1>Profile</h1>
-        <h2>{{ user.first_name }} {{ user.last_name }} {{ user.security_question }}</h2>
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
         <a href="{% url 'editPassword' %}" type="submit" class="btn btn-success">Edit Passsword</a>
     </form>
 {% endblock %}

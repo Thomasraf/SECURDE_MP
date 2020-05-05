@@ -3,7 +3,7 @@ from .models import User, Review, Book
 from django.core.validators import RegexValidator
 
 class RegisterForm(forms.ModelForm):
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    alphanumeric        = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
     password           = forms.CharField(min_length=6,widget=forms.PasswordInput, validators=[alphanumeric])
     id_num             = forms.IntegerField(label="I.D. Number")
     
@@ -13,11 +13,11 @@ class RegisterForm(forms.ModelForm):
         widget = {'role': forms.HiddenInput()}
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model= User
-        fields = ["username", "password"]
+        fields = ["email", "password"]
 
 class AddBookForm(forms.ModelForm):
     year_of_pub =forms.CharField(label="Year Of Publication")

@@ -82,7 +82,6 @@ def accountRegister(request):
             security_question = request.POST["security_question"]
             security_answer = request.POST["security_answer"]
             username = request.POST["username"]
-            hashed_password = make_password(request.POST["password"])
             user = User.objects.create_user(
                 first_name = first_name,
                 last_name = last_name,
@@ -91,9 +90,9 @@ def accountRegister(request):
                 security_question = security_question,
                 role = 'regular',
                 security_answer = security_answer,
-                username = username, 
-                password = hashed_password
+                username = username,
             )
+            user.set_password(request.POST["password"])
             user.save()
             return redirect('login')
     else:
@@ -103,14 +102,18 @@ def accountRegister(request):
 def accountLogin(request):
     form = LoginForm(request.POST)
     if form.is_valid():
-        username = request.POST["username"]
+        email = request.POST["email"]
         password = request.POST['password']
-        account = authenticate(username=username, password=password)
-        if account is not None:
-            login(request, account)
+        user = authenticate(request,email=email, password=password)
+        if user is not None:
+            login(request, user)
             return redirect('library-home')
+            print('worked')
         else:
             form = LoginForm()
+            print('Did Not Work')
+            print(email)
+            print(password)
     return render(request, "login.html", {'form': form})
 
 def accountProfile(request):
