@@ -27,6 +27,7 @@ books = [
 
 # Book Views
 def home(request):
+    print(request.session)
     context = {
         'books': Book.objects.all()
     }

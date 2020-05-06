@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
 ]
 
+SESSION_COOKIE_AGE = 900
+
 AUTH_USER_MODEL = 'library.User'
 
 MIDDLEWARE = [
