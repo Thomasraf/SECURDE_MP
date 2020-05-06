@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{%  block title %} Home {% endblock %}
+{%  block title %} Search Results {% endblock %}
 {% block content %}
+<h1>Searched for: {{query}}</h1>
 {% for books in books %}
 <article class="media content-section">
     <div class="media-body">
         <div class="article-metadata">
-            <h2><a class="article-title" href="books/{{books.ISBN}}">{{ books.title }}</a></h2>
+            <h2><a class="article-title" href="http://localhost:8000/books/{{books.ISBN}}">{{ books.title }}</a></h2>
             <h4>{{ books.author }}</h4>
         </div>
         <small class="text-muted">{{ books.year_of_pub }}</small>

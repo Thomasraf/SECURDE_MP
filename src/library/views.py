@@ -6,6 +6,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from django.db.models import Q
 User = get_user_model()
 
 
@@ -30,8 +32,24 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+def search(request):
+    try:
+        q = request.GET.get('q')
+    except:
+        q = None
+    if q:
+        books = Book.objects.filter(title__icontains=q)
+        context = {'query': q, 'books': books}
+        template = 'results.html'
+    else:
+        template = 'home.html'
+        context = {
+            'books': Book.objects.all()
+        }
+    return render(request, template, context)
+
 def about(request):
-    return render(request, 'about.html', {'title': 'About'})
+    return render(request, template, {'title': 'About'})
 
 def addBook(request):
     if request.method == 'POST':

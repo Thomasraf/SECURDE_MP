@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <style>
-      body {
+  body{
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
@@ -95,6 +95,11 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+#searchButton{
+  border-color: white;
+  color: white;
+}
     </style>
 
     <title>{% block title %}Xavier's Library{% endblock %}</title>
@@ -115,6 +120,12 @@ a.article-title:hover {
                       <a class="nav-item nav-link" href="{% url 'library-about' %}">About</a>
                       <a class="nav-item nav-link" href="{% url 'addBook' %}">Add Book</a>
                     </div>
+                    <div class="search-bar mt-sm-2 mr-2">
+                    </div>
+                    <form class="form-inline my-2 my-lg-0" action='/s/'>
+                      <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search book title" aria-label="Search">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="searchButton">Search</button>
+                    </form>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                       <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
@@ -141,6 +152,10 @@ a.article-title:hover {
                       <a class="nav-item nav-link" href="{% url 'library-about' %}">About</a>
                       <a class="nav-item nav-link" href="{% url 'addBook' %}">Add Book</a>
                     </div>
+                    <form class="form-inline my-2 my-lg-0" action='/s/'>
+                      <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search book title" aria-label="Search">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="searchButton">Search</button>
+                    </form>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                       <!-- <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a> -->
