@@ -25,7 +25,7 @@ books = [
     }
 ]
 
-
+# Book Views
 def home(request):
     context = {
         'books': Book.objects.all()
@@ -49,7 +49,7 @@ def search(request):
     return render(request, template, context)
 
 def about(request):
-    return render(request, template, {'title': 'About'})
+    return render(request, 'about.html  ', {'title': 'About'})
 
 def addBook(request):
     if request.method == 'POST':
@@ -89,6 +89,8 @@ def viewBook(request, ISBN):
     }
     return render(request, "book.html", context)
 
+
+# Account Views
 def accountRegister(request): 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
