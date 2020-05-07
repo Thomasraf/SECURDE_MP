@@ -3,14 +3,6 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 import uuid
 
 # Create your models here.
-
-"""class Genre(models.Model):
-    name = models.CharField(max_length=200, help_text='Enter a book genre (e.g. Science Fiction)')
-    
-    def __str__(self):
-        return self.name"""
-
-
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200, default=None)
@@ -71,34 +63,27 @@ class BookBorrow(models.Model):
     def __str__(self):
         return f'{self.title} ({self.userBorrowing})'
 
-class BookReturn(models.Model):
+# class BookReturn(models.Model):
+#     title = models.CharField(max_length=200, default=None)
+#     author = models.CharField(max_length=200, default=None)
+#     publisher = models.CharField(max_length=100, default=None)
+#     year_of_pub = models.IntegerField(default=None)
+#     description = models.TextField(max_length=1000, default=None)
+#     ISBN = models.CharField(max_length=13, default=None)
+#     dewey_call = models.CharField(max_length=3, default=None)
+#     userReturned = models.CharField(max_length=200, default=None)
+
+#     def __str__(self):
+#         return f'{self.title} ({self.userReturned})'
+
+class Review(models.Model):
     title = models.CharField(max_length=200, default=None)
-    author = models.CharField(max_length=200, default=None)
-    publisher = models.CharField(max_length=100, default=None)
-    year_of_pub = models.IntegerField(default=None)
-    description = models.TextField(max_length=1000, default=None)
-    ISBN = models.CharField(max_length=13, default=None)
-    dewey_call = models.CharField(max_length=3, default=None)
-    userReturned = models.CharField(max_length=200, default=None)
-
-    def __str__(self):
-        return f'{self.title} ({self.userReturned})'
-
+    userWhoCommented = models.CharField(max_length=200, default=None)
+    content = models.TextField(max_length=280)
+    timestamp = models.DateTimeField()
     
-"""class Author(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField('Died', null=True, blank=True)
-
-    class Meta:
-        ordering = ['last_name', 'first_name']
-
-    def get_absolute_url(self):
-        return reverse('author-detail', args=[str(self.id)])
-
     def __str__(self):
-        return f'{self.last_name}, {self.first_name}'"""
+        return f'{self.title} ({self.userWhoCommented})' 
     
 
     
@@ -197,12 +182,3 @@ class User(AbstractUser):
 
     def has_module_perms(self, app_label):
         return True
-    
-class Review(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(max_length=280)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return '{}-{}'.format(self.book.title, str(self.user.username))

@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
-from .models import Book, Review, BookInstance, BookBorrow, BookReturn
+from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.hashers import make_password
 from datetime import datetime, timedelta
+from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -85,12 +86,13 @@ def addBook(request):
     return render(request, "addBook.html", {'form': form})
 
 def viewBook(request, ISBN):
+    form = ReviewForm(request.POST)
     book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
-    reviews = Review.objects.filter(book=book)
+    reviews = get_object_or_404(Review, title=details.title)
     bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
 
-    if request.method == 'POST':
+    if 'borrow' in request.POST:
         BookBorrow.objects.create(
                 title = details.title,
                 author = details.author,
@@ -106,13 +108,34 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': reviews
+            'reviews': reviews,
+            'user': request.user,
+            'form': form
         }
-    else:
+    if 'review' in request.POST:
+        content = request.POST["content"]
+        Review.objects.create(
+            title = details.title,
+            userWhoCommented = request.user.username,
+            content = content,
+            timestamp = datetime.now(),
+        )
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': reviews
+            'reviews': reviews,
+            'user': request.user,
+            'form': form
+        }
+        return HttpResponseRedirect(request.path_info)
+    else:
+        form = ReviewForm()
+        context = {
+            'details': details, 
+            'bookAvailability': bookinstance_details,
+            'reviews': reviews,
+            'user': request.user,
+            'form': form
         }
     return render(request, "book.html", context)
 

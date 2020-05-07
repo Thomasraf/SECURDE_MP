@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {%  block title %} Book Page {% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="page-header">
     <h1>{{ details.title }}</h1>
@@ -35,25 +36,24 @@
             <form class="form-group" method="POST">
                 {% csrf_token %}
                 <h3>Would you like to borrow this book?</h3>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="borrowButton">Borrow Book</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="borrow" id="borrowButton">Borrow Book</button>
             </form>
         <div>
     </article>
 {% endif %}
 
+Review Section:
+<article class="media content-section">
+    <div class="media-body">
+        <h3>User: {{ user.username }}</h3>
+        <h4>Comment: {{ reviews.content  }}</h4>
+        <p>Date Posted: {{ reviews.timestamp }}</p>
+    </div>
+</article>
 
+<form class="form-group" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="review" id="reviewBook">Leave Review</button>
+</form>
 {% endblock content %}
-
-
-<br><br>
-<hr>
-<div class="main-reviews-section">
-    {{ reviews.count }} Review{{ reviews|pluralize }}
-    {% for review in reviews %}
-    <blockquote class="blockquote">
-        <p class="mb-0">{{ review.content }}</p>
-        <footer class="blockquote-footer">Review By: <cite title="Source Title">{{ review.user|capfirst }}</cite></footer>
-    </blockquote>
-    {% endfor %}
-
-</div>
