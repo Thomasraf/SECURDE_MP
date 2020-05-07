@@ -13,13 +13,7 @@ import uuid
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    
     author = models.CharField(max_length=200, default=None)
-    
-    #author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
-    
-    #genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
-    
     publisher = models.CharField(max_length=100)
     year_of_pub = models.IntegerField()
     description = models.TextField(max_length=1000)
@@ -35,7 +29,7 @@ class Book(models.Model):
     
     
 class BookInstance(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
+    id = models.CharField(max_length=13, primary_key=True)
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True) 
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)

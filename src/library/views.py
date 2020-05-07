@@ -75,6 +75,7 @@ def addBook(request):
                 dewey_call = dewey_call
             ),
                 imprint = 'First Edition',
+                id = ISBN,
                 due_back = datetime.now()+timedelta(days=7),
                 status = 'a'
             )
@@ -87,11 +88,13 @@ def viewBook(request, ISBN):
     book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
     reviews = Review.objects.filter(book=book)
-    
+    bookinstance = BookInstance.objects.filter(book=book)
+    bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
     
     context = {
         'details': details, 
         'book': book,
+        'bookAvailability': bookinstance_details,
         'reviews': reviews
     }
     return render(request, "book.html", context)

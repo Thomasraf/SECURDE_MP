@@ -14,10 +14,18 @@
 
 <article class="media content-section">
     <div class="media-body">
-        <h3>Status:</h3><h3 style="color: grey;"> Maintenance</h3>
-        <h3>Status:</h3><h3 style="color: blue;"> On Loan</h3>
-        <h3>Status:</h3><h3 style="color: green;"> Available</h3>
-        <h3>Status:</h3><h3 style="color: red;"> Reserved</h3>
+        {% if bookAvailability.status == 'a' %}
+            <h3>Status:</h3><h3 style="color: green;"> Available</h3>
+        {% endif %}
+        {% if bookAvailability.status == 'o' %}
+            <h3>Status:</h3><h3 style="color: blue;"> On Loan</h3>
+        {% endif %}
+        {% if bookAvailability.status == 'm' %}
+            <h3>Status:</h3><h3 style="color: grey;"> Maintenance</h3>
+        {% endif %}
+        {% if bookAvailability.status == 'r' %}
+            <h3>Status:</h3><h3 style="color: red;"> Reserved</h3>
+        {% endif %}
 </article>
 
 
