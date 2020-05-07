@@ -12,7 +12,7 @@ import uuid
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=200, default=None)
+    title = models.CharField(max_length=200)
     
     author = models.CharField(max_length=200, default=None)
     
@@ -22,8 +22,8 @@ class Book(models.Model):
     
     publisher = models.CharField(max_length=100)
     year_of_pub = models.IntegerField()
-    description = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
-    ISBN = models.CharField('ISBN', max_length=13, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
+    description = models.TextField(max_length=1000)
+    ISBN = models.CharField('ISBN', max_length=13)
     dewey_call = models.CharField(max_length=3)
     
     
@@ -59,7 +59,11 @@ class BookInstance(models.Model):
         ordering = ['due_back']
 
     def __str__(self):
-        return f'{self.id} ({self.book.title})'
+        if self.book:
+            return '%s (%s)' %(self.id, self.book.title)
+        else:
+            return '%s (%s)' %(self.id, self.imprint)
+
     
 """class Author(models.Model):
     first_name = models.CharField(max_length=100)
