@@ -13,11 +13,11 @@ class RegisterForm(forms.ModelForm):
         widget = {'role': forms.HiddenInput()}
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
+    username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model= User
-        fields = ["email", "password"]
+        fields = ["username", "password"]
 
 class AddBookForm(forms.ModelForm):
     year_of_pub =forms.CharField(label="Year Of Publication")

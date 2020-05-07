@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
-from .models import Book, Review, BookInstance
+from .models import Book, Review, BookInstance, BookBorrow, BookReturn
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
@@ -88,15 +88,32 @@ def viewBook(request, ISBN):
     book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
     reviews = Review.objects.filter(book=book)
-    bookinstance = BookInstance.objects.filter(book=book)
     bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
-    
-    context = {
-        'details': details, 
-        'book': book,
-        'bookAvailability': bookinstance_details,
-        'reviews': reviews
-    }
+
+    if request.method == 'POST':
+        BookBorrow.objects.create(
+                title = details.title,
+                author = details.author,
+                publisher = details.publisher,
+                year_of_pub = details.year_of_pub,
+                description = details.description,
+                ISBN = details.ISBN,
+                dewey_call = details.dewey_call,
+                userBorrowing = request.user.username
+            )
+        bookinstance_details.status = 'r'
+        bookinstance_details.save()
+        context = {
+            'details': details, 
+            'bookAvailability': bookinstance_details,
+            'reviews': reviews
+        }
+    else:
+        context = {
+            'details': details, 
+            'bookAvailability': bookinstance_details,
+            'reviews': reviews
+        }
     return render(request, "book.html", context)
 
 
@@ -133,9 +150,9 @@ def accountLogin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            email       = request.POST["email"]
+            username       = request.POST["username"]
             password    = request.POST["password"]
-            user        = authenticate(request, email=email, password=password)
+            user        = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('library-home')

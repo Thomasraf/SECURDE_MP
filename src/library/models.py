@@ -58,6 +58,32 @@ class BookInstance(models.Model):
         else:
             return '%s (%s)' %(self.id, self.imprint)
 
+class BookBorrow(models.Model):
+    title = models.CharField(max_length=200, default=None)
+    author = models.CharField(max_length=200, default=None)
+    publisher = models.CharField(max_length=100, default=None)
+    year_of_pub = models.IntegerField(default=None)
+    description = models.TextField(max_length=1000, default=None)
+    ISBN = models.CharField(max_length=13, default=None)
+    dewey_call = models.CharField(max_length=3, default=None)
+    userBorrowing = models.CharField(max_length=200, default=None)
+
+    def __str__(self):
+        return f'{self.title} ({self.userBorrowing})'
+
+class BookReturn(models.Model):
+    title = models.CharField(max_length=200, default=None)
+    author = models.CharField(max_length=200, default=None)
+    publisher = models.CharField(max_length=100, default=None)
+    year_of_pub = models.IntegerField(default=None)
+    description = models.TextField(max_length=1000, default=None)
+    ISBN = models.CharField(max_length=13, default=None)
+    dewey_call = models.CharField(max_length=3, default=None)
+    userReturned = models.CharField(max_length=200, default=None)
+
+    def __str__(self):
+        return f'{self.title} ({self.userReturned})'
+
     
 """class Author(models.Model):
     first_name = models.CharField(max_length=100)
@@ -94,8 +120,6 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must answer their chosen Security Question")
         if not username:
             raise ValueError("Users must have a Username")
-        if not first_name:
-            raise ValueError("Users must have a Password")
 
         user = self.model(
             email               = self.normalize_email(email),
@@ -160,8 +184,8 @@ class User(AbstractUser):
     is_staff          = models.BooleanField(default=False)
     is_superuser      = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name','id_num','role','security_question','security_answer','username']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['first_name','last_name','id_num','role','security_question','security_answer','email']
 
     objects = UserManager()
 
