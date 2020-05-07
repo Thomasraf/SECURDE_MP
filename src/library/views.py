@@ -14,19 +14,6 @@ User = get_user_model()
 
 
 # Create your views here.
-books = [
-    {
-        'title': 'How To Fly To The Sun',
-        'author': 'Rafael Cruz',
-        'dateOfPublication': 'June 11, 1998'
-    },
-    {
-        'title': 'How To Fly To The Moon',
-        'author': 'Julian De Castro',
-        'dateOfPublication': 'March 17, 1998'
-    }
-]
-
 # Book Views
 def home(request):
     print(request.session)
@@ -89,7 +76,6 @@ def viewBook(request, ISBN):
     form = ReviewForm(request.POST)
     book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
-    reviews = get_object_or_404(Review, title=details.title)
     bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
 
     if 'borrow' in request.POST:
@@ -108,7 +94,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': reviews,
+            'reviews': Review.objects.all(),
             'user': request.user,
             'form': form
         }
@@ -123,7 +109,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': reviews,
+            'reviews': Review.objects.all(),
             'user': request.user,
             'form': form
         }
@@ -133,7 +119,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': reviews,
+            'reviews': Review.objects.all(),
             'user': request.user,
             'form': form
         }

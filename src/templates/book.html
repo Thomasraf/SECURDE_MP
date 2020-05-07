@@ -43,6 +43,7 @@
 {% endif %}
 
 Review Section:
+{% for reviews in reviews %}
 <article class="media content-section">
     <div class="media-body">
         <h3>User: {{ user.username }}</h3>
@@ -50,6 +51,7 @@ Review Section:
         <p>Date Posted: {{ reviews.timestamp }}</p>
     </div>
 </article>
+{% endfor %}
 
 <form class="form-group" method="POST">
     {% csrf_token %}
