@@ -128,7 +128,9 @@ a.article-title:hover {
                     <div class="navbar-nav mr-auto">
                       <a class="nav-item nav-link" href="{% url 'library-home' %}">Home</a>
                       <a class="nav-item nav-link" href="{% url 'library-about' %}">About</a>
-                      <a class="nav-item nav-link" href="{% url 'addBook' %}">Add Book</a>
+                      {% if user.role == 'manager'%}
+                        <a class="nav-item nav-link" href="{% url 'addBook' %}">Add Book</a>
+                      {% endif %}
                     </div>
                     <div class="search-bar mt-sm-2 mr-2">
                     </div>
@@ -160,7 +162,9 @@ a.article-title:hover {
                     <div class="navbar-nav mr-auto">
                       <a class="nav-item nav-link" href="{% url 'library-home' %}">Home</a>
                       <a class="nav-item nav-link" href="{% url 'library-about' %}">About</a>
-                      <a class="nav-item nav-link" href="{% url 'addBook' %}">Add Book</a>
+                      {% if user.role == 'manager'%}
+                        <a class="nav-item nav-link" href="{% url 'addBook' %}">Add Book</a>
+                      {% endif %}
                     </div>
                     <form class="form-inline my-2 my-lg-0" action='/s/'>
                       <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search book title" aria-label="Search">

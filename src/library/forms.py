@@ -36,6 +36,7 @@ class PasswordChangeForm(forms.ModelForm):
         fields = ["security_answer"]
     
 class ReviewForm(forms.ModelForm):
+    content = forms.CharField(label="Leave A Review", widget=forms.Textarea())
     class Meta:
         model = Review
         fields = ["content"]

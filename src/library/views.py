@@ -6,6 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.hashers import make_password
 from datetime import datetime, timedelta
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
@@ -94,7 +95,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': Review.objects.all(),
+            'reviews': Review.objects.filter(title=details.title),
             'user': request.user,
             'form': form
         }
@@ -109,7 +110,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': Review.objects.all(),
+            'reviews': Review.objects.filter(title=details.title),
             'user': request.user,
             'form': form
         }
@@ -119,7 +120,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
-            'reviews': Review.objects.all(),
+            'reviews': Review.objects.filter(title=details.title),
             'user': request.user,
             'form': form
         }
@@ -170,7 +171,12 @@ def accountLogin(request):
     return render(request, "login.html", {'form':form})
 
 def accountProfile(request):
-    context = {'user': request.user}
+    # borrowedBook = get_object_or_404(BookBorrow, userBorrowing = request.user.username)
+    borrowedBook = BookBorrow.objects.filter(userBorrowing = request.user.username)
+    context = {
+        'user': request.user,
+        'borrowedBook': borrowedBook
+        }
     return render(request, 'profile.html', context)
 
 def accountLogout(request):
@@ -178,7 +184,7 @@ def accountLogout(request):
     return redirect('library-home')
 
 def accountChangePassword(request):
-    user = User.objects.filter(first_name = request.user.first_name)
+    user = User.objects.filter(first_name = request.user.username)
     details = get_object_or_404(User, first_name = request.user.first_name)
     if request.method == 'POST':
         form = PasswordChangeForm(request.POST)
@@ -194,13 +200,17 @@ def accountChangePassword(request):
         form = PasswordChangeForm()
     return render(request, 'changePassword.html', {'form': form})
 
-#we need a book view
-#def book_detail(request, id, slug):
-#    book = get_object_or_404(Book, id=id, slug=slug)
-#    reviews = Review.objects.filter(book=book).order_by('-id')
-#    
-#    context = {
-#        'book': book,
-#       'reviews': reviews,
-#    }
-#    return render(request, 'library/book_detail')
+def accountForgotPassword(request):
+    try:
+        username = request.GET.get('username')
+    except:
+        username = None
+    if username:
+        user = get_object_or_404(User, username = username)
+        context = {'form': PasswordChangeForm(), 'user': user}
+        template = 'changePassword.html'
+        return render(request, template, context)
+    else:
+        context = {'msg': 'Dont mind this first'}
+        template = 'forgotPassword.html'
+    return render(request, template, context)

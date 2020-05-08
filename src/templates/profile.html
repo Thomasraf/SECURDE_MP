@@ -3,10 +3,30 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form class="form-group" method="POST">
-        {% csrf_token %}
-        <h1>Profile</h1>
-        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-        <a href="{% url 'editPassword' %}" type="submit" class="btn btn-success">Edit Passsword</a>
-    </form>
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h1>Profile</h1>
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            </div>
+            <form class="form-group" method="POST">
+                {% csrf_token %}
+                <a href="{% url 'editPassword' %}" type="submit" class="btn btn-success">Change Password?</a>
+            </form>
+        </div>
+    </article>
+
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h1>Borrowed Books:</h1>
+                </div>
+                {% for borrowedBook in borrowedBook %}
+                    <div class="article-metadata">
+                        <h2><a class="article-title" href="books/{{books.ISBN}}">{{ borrowedBook.title }}</a></h2>
+                        <h4>{{ borrowedBook.author }}</h4>
+                    </div>
+                {% endfor %}
+            </div>
+        </article>
 {% endblock %}

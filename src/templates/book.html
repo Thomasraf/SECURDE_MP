@@ -9,7 +9,9 @@
     <div class="media-body">
         <h3>Author: {{ details.author}}</h3>
         <h4>Published By: {{ details.publisher}}</h4>
-        <p>{{ details.description}}</p>
+        <p>Book Description: {{ details.description }} </p>
+        <p>Book's ISBN: {{ details.ISBN }}</p>
+        <p>Book's Dewey Decimal: {{ details.dewey_call }}</p>
     </div>
 </article>
 
@@ -30,7 +32,8 @@
     <div>
 </article>
 
-{% if bookAvailability.status == 'a' %}
+{% if bookAvailability.status == 'a'%}
+{% if user.role == 'regular'%}
     <article class="media content-section">
         <div class="media-body">
             <form class="form-group" method="POST">
@@ -41,12 +44,12 @@
         <div>
     </article>
 {% endif %}
+{% endif %}
 
-Review Section:
 {% for reviews in reviews %}
 <article class="media content-section">
     <div class="media-body">
-        <h3>User: {{ user.username }}</h3>
+        <h3>User: {{ reviews.userWhoCommented }}</h3>
         <h4>Comment: {{ reviews.content  }}</h4>
         <p>Date Posted: {{ reviews.timestamp }}</p>
     </div>
