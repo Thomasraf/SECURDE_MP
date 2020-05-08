@@ -156,6 +156,34 @@ def accountRegister(request):
         form = RegisterForm()
     return render(request, "register.html", {'form':form})
 
+def managerRegister(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            first_name = request.POST["first_name"]
+            last_name = request.POST["last_name"]
+            email = request.POST["email"]
+            id_num = request.POST["id_num"]
+            security_question = request.POST["security_question"]
+            security_answer = request.POST["security_answer"]
+            username = request.POST["username"]
+            user = User.objects.create_user(
+                first_name = first_name,
+                last_name = last_name,
+                email = email,
+                id_num = id_num,
+                security_question = security_question,
+                role = 'manager',
+                security_answer = security_answer,
+                username = username,
+            )
+            user.set_password(request.POST["password"])
+            user.save()
+            return redirect('library-home')
+    else:
+        form = RegisterForm()
+    return render(request, "registerManager.html", {'form':form})
+
 def accountLogin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)

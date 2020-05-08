@@ -149,7 +149,7 @@ class User(AbstractUser):
     ROLES = [
         ('regular', 'Student/Teacher'),
         ('manager', 'Book Manager'),
-        ('admin', 'Administrator'),
+        ('head', 'Administrator'),
     ]
 
     first_name        = models.CharField(max_length=100, default=None)

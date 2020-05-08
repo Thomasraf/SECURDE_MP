@@ -20,6 +20,7 @@ from library import views as libraryView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', libraryView.accountRegister, name="register"),
+    path('registerManager/', libraryView.managerRegister, name="registerManager"),
     path('login/', libraryView.accountLogin, name="login"),
     path('profile/', libraryView.accountProfile, name="profile"),
     path('editPassword/', libraryView.accountChangePassword, name="editPassword"),
