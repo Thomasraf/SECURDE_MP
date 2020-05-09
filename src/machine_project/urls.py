@@ -33,3 +33,6 @@ urlpatterns = [
     path('books/<int:ISBN>', libraryView.viewBook, name="viewBook"),
     path('', libraryView.home, name="library-home"),
 ]
+
+handler404 = 'library.views.error_404'
+handler500 = 'library.views.error_500'

@@ -242,3 +242,9 @@ def accountForgotPassword(request):
         context = {'msg': 'Dont mind this first'}
         template = 'forgotPassword.html'
     return render(request, template, context)
+
+def error_404(request,exception):
+    return render (request,'404.html')
+
+def error_500(request):
+    return render (request,'500.html')
