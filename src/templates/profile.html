@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+{% if user.is_authenticated%}
     <article class="media content-section">
         <div class="media-body">
             <div class="article-metadata">
@@ -15,18 +16,30 @@
             </form>
         </div>
     </article>
-
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <h1>Borrowed Books:</h1>
-                </div>
-                {% for borrowedBook in borrowedBook %}
-                    <div class="article-metadata">
-                        <h2><a class="article-title" href="books/{{books.ISBN}}">{{ borrowedBook.title }}</a></h2>
-                        <h4>{{ borrowedBook.author }}</h4>
-                    </div>
-                {% endfor %}
+{% else %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h1>I'm sorry you are not logged in</h1>
+                <a class="nav-item nav-link" href="{% url 'register' %}">If You Would Like To Register</a>
+                <a class="nav-item nav-link" href="{% url 'login' %}">If You Would Like To Login</a>
             </div>
-        </article>
+        </div>
+    </article>
+{% endif %}
+{% if user.role == 'regular'%}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h1>Borrowed Books:</h1>
+            </div>
+            {% for borrowedBook in borrowedBook %}
+                <div class="article-metadata">
+                    <h2><a class="article-title" href="books/{{books.ISBN}}">{{ borrowedBook.title }}</a></h2>
+                    <h4>{{ borrowedBook.author }}</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+{% endif %}
 {% endblock %}
