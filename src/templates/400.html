@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{%  block title %} Error 400 {% endblock %}
+{% block content %}
+
+<div class="jumbotron">
+  <h1 class="display-4">Bad Request</h1>
+  <p class="lead">Sorry! The requested URL was not found on this server.</p>
+  <hr class="my-4">
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="{% url 'library-home' %}" role="button">Back to Home</a>
+  </p>
+</div>
+
+{% endblock content %}
