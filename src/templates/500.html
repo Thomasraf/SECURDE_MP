@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{%  block title %} Error 500 {% endblock %}
+{% block content %}
+
+<div class="jumbotron">
+  <h1 class="display-4">Internal Server Error</h1>
+  <p class="lead">We apologize, the server encountered and internal error or misconfiguration and was unable to complete your request.</p>
+  <hr class="my-4">
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="{% url 'library-home' %}" role="button">Back to Home</a>
+  </p>
+</div>
+
+{% endblock content %}
