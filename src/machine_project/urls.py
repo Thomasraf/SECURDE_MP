@@ -24,6 +24,7 @@ urlpatterns = [
     path('login/', libraryView.accountLogin, name="login"),
     path('profile/', libraryView.accountProfile, name="profile"),
     path('editPassword/', libraryView.accountChangePassword, name="editPassword"),
+    path('returnBook/<int:ISBN>', libraryView.returnBook, name="returnBook"),
     path('logout/', libraryView.accountLogout, name="logout"),
     path('about/', libraryView.about, name="library-about"),
     path('catalog/', libraryView.home, name="library-home"),

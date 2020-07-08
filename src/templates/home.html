@@ -2,20 +2,28 @@
 {%  block title %} Home {% endblock %}
 {% block content %}
 
-{% for books in books %}
-{% if user.role == 'regular'%}
+{% if user.role == 'regular' %}
     <article class="media content-section">
-        <div class="media-body">
-            <div class="article-metadata">
-                <h2><a class="article-title" href="books/{{books.ISBN}}">{{ books.title }}</a></h2>
-                <h4>{{ books.author }}</h4>
+    <div class="media-body">
+    <div class="article-metadata">
+    <h2>List Of All Books</h2>
+    <hr>
+{% for books in books %}    
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h2><a class="article-title" href="books/{{books.ISBN}}">{{ books.title }}</a></h2>
+                    <h4>{{ books.author }}</h4>
+                </div>
+                <small class="text-muted">{{ books.year_of_pub }}</small>
+                <a class="mr-2">Publisher: {{ books.publisher }}</a>
             </div>
-            <small class="text-muted">{{ books.year_of_pub }}</small>
-            <a class="mr-2">Publisher: {{ books.publisher }}</a>
-        </div>
+        </article>
+{% endfor %}
+    </div>
+    </div>
     </article>
 {% endif %}
-{% endfor %}
 
 {% for books in books %}
 {% if user.is_anonymous %}
@@ -34,6 +42,31 @@
 
 {% if user.role == 'manager' %}
     <h1>You are a manager</h1>
+    <br>
+    <button class="createManagerButton"><a href="{% url 'addBook' %}" class="adminButtons" >Add A Book</a></button>
+    <br>
+    <br>
+    
+    <article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+    <h2>List Of All Books</h2>
+    <hr>
+{% for books in books %}    
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h2><a class="article-title" href="books/{{books.ISBN}}">{{ books.title }}</a></h2>
+                    <h4>{{ books.author }}</h4>
+                </div>
+                <small class="text-muted">{{ books.year_of_pub }}</small>
+                <a class="mr-2">Publisher: {{ books.publisher }}</a>
+            </div>
+        </article>
+{% endfor %}
+    </div>
+    </div>
+    </article>
 {% endif %}
 
 {% if user.role == 'head' %}

@@ -7,13 +7,9 @@
     <article class="media content-section">
         <div class="media-body">
             <div class="article-metadata">
-                <h1>Profile</h1>
+                <h1>Logged In As:</h1>
                 <h2>{{ user.first_name }} {{ user.last_name }}</h2>
             </div>
-            <form class="form-group" method="POST">
-                {% csrf_token %}
-                <a href="{% url 'editPassword' %}" type="submit" class="btn btn-success">Change Password?</a>
-            </form>
         </div>
     </article>
 {% else %}
@@ -30,22 +26,16 @@
 {% if user.role == 'regular'%}
     <article class="media content-section">
         <div class="media-body">
-            <div class="article-metadata">
-                <h1>Borrowed Books:</h1>
+            <div>
+                <h1>Are You Sure You Want To Return {{ returnBook.title }}?</h1>
             </div>
-            {% if borrowedBook %}
-            {% for borrowedBook in borrowedBook %}
-                <div class="article-metadata">
-                    <h2><a class="article-title" href="http://localhost:8000/books/{{borrowedBook.ISBN}}">{{ borrowedBook.title }}</a></h2>
-                    <h4>{{ borrowedBook.author }}</h4>
-                    <a href="http://localhost:8000/returnBook/{{borrowedBook.ISBN}}" type="submit" class="btn btn-success">Return Book?</a>
-                </div>
-            {% endfor %}
-            {% else%}
-                <div class="article-metadata">
-                    <h2>You have no borrowed books</h2>
-                </div>
-            {% endif %}
+            <div>
+                <form class="form-group" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="yes" id="yesButton">Yes</button>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="no" id="noButton">No</button>
+                </form>
+            </div>
         </div>
     </article>
 {% endif %}

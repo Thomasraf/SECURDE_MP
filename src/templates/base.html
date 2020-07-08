@@ -127,6 +127,14 @@ a.article-title:hover {
   text-decoration: none;
   color: white;
 }
+
+.yesButton{
+  float: left;
+}
+
+.noButton{
+  float: right;
+}
 </style>
 
     <title>{% block title %}Xavier's Library{% endblock %}</title>
@@ -160,9 +168,6 @@ a.article-title:hover {
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                       <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                      {% if user.role == 'head' %}
-                        <a class="nav-item nav-link" href="{% url 'register' %}">Register A Manager Account</a>
-                      {% endif %}
                       <!-- <a class="nav-item nav-link" href="{% url 'login' %}">Login</a> -->
                       <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     </div>

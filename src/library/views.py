@@ -20,6 +20,7 @@ def home(request):
     print(request.session)
     context = {
         'books': Book.objects.all()
+
     }
     return render(request, 'home.html', context)
 
@@ -126,6 +127,31 @@ def viewBook(request, ISBN):
         }
     return render(request, "book.html", context)
 
+def returnBook(request, ISBN):
+    returnBook = BookBorrow.objects.filter(userBorrowing = request.user.username)
+
+    if 'yes' in request.POST:
+        book = BookBorrow.objects.get(ISBN = ISBN)
+        book.delete()
+        bookInstance = BookInstance.objects.filter(id = ISBN).update(status="a")
+        context = {
+            'user': request.user,
+            'returnBook': returnBook
+        }
+        return render(request, 'profile.html', context)
+    if 'no' in request.POST:
+        context = {
+            'user': request.user,
+            'returnBook': returnBook
+        }
+        return render(request, 'profile.html', context)
+    else:
+        context = {
+            'user': request.user,
+            'returnBook': returnBook
+        }
+    return render(request, 'returnBook.html', context)
+
 
 # Account Views
 def accountRegister(request): 
@@ -206,6 +232,7 @@ def accountProfile(request):
         'borrowedBook': borrowedBook
         }
     return render(request, 'profile.html', context)
+
 
 def accountLogout(request):
     logout(request)
