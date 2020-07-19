@@ -66,7 +66,6 @@ def addBook(request):
             ),
                 imprint = 'First Edition',
                 id = ISBN,
-                due_back = datetime.now()+timedelta(days=7),
                 status = 'a'
             )
             return redirect('library-home')
@@ -79,6 +78,7 @@ def viewBook(request, ISBN):
     book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
     bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
+    bookBorrow = BookBorrow.objects.filter(ISBN=ISBN)
 
     if 'borrow' in request.POST:
         BookBorrow.objects.create(
@@ -96,6 +96,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
+            'bookBorrow': bookBorrow,
             'reviews': Review.objects.filter(title=details.title),
             'user': request.user,
             'form': form
@@ -111,6 +112,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
+            'bookBorrow': bookBorrow,
             'reviews': Review.objects.filter(title=details.title),
             'user': request.user,
             'form': form
@@ -121,6 +123,7 @@ def viewBook(request, ISBN):
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
+            'bookBorrow': bookBorrow,
             'reviews': Review.objects.filter(title=details.title),
             'user': request.user,
             'form': form

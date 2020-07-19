@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.urls import reverse
+from datetime import datetime, timedelta
 import uuid
 
 # Create your models here.
@@ -22,7 +23,6 @@ class BookInstance(models.Model):
     id = models.CharField(max_length=13, primary_key=True)
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True) 
     imprint = models.CharField(max_length=200)
-    due_back = models.DateField(null=True, blank=True)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -39,9 +39,6 @@ class BookInstance(models.Model):
         help_text='Book availability',
     )
 
-    class Meta:
-        ordering = ['due_back']
-
     def __str__(self):
         if self.book:
             return '%s (%s)' %(self.id, self.book.title)
@@ -57,6 +54,8 @@ class BookBorrow(models.Model):
     ISBN = models.CharField(max_length=13, default=None)
     dewey_call = models.CharField(max_length=3, default=None)
     userBorrowing = models.CharField(max_length=200, default=None)
+    date_borrowed = models.DateField(default=datetime.now())
+    due_back = models.DateField(default=datetime.now() + timedelta(days=15))
 
     def __str__(self):
         return f'{self.title} ({self.userBorrowing})'

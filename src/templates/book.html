@@ -46,6 +46,21 @@
 {% endif %}
 {% endif %}
 
+{% if user.role == 'manager' %}
+    {% if bookAvailability.status == 'r'%}
+        {% for bookBorrow in bookBorrow %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <h2>Username borrowing: {{ bookBorrow.userBorrowing }}</h2>
+                    <h3>Borrowed on: {{ bookBorrow.date_borrowed }}</h3>
+                    <h3>Due Date: {{ bookBorrow.due_back }}</h3>
+                <div>
+            </article>
+        {%endfor%}
+    {% endif %}
+{% endif %}
+
+{% if user.role == 'regular' %}
 {% for reviews in reviews %}
 <article class="media content-section">
     <div class="media-body">
@@ -61,4 +76,23 @@
     {{ form|crispy }}
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="review" id="reviewBook">Leave Review</button>
 </form>
+{% endif %}
+
+{% if user.is_anonymous %}
+{% for reviews in reviews %}
+<article class="media content-section">
+    <div class="media-body">
+        <h3>User: {{ reviews.userWhoCommented }}</h3>
+        <h4>Comment: {{ reviews.content  }}</h4>
+        <p>Date Posted: {{ reviews.timestamp }}</p>
+    </div>
+</article>
+{% endfor %}
+
+<form class="form-group" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="review" id="reviewBook">Leave Review</button>
+</form>
+{% endif %}
 {% endblock content %}
