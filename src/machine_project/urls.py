@@ -31,6 +31,7 @@ urlpatterns = [
     path('addBook/', libraryView.addBook, name="addBook"),
     path('s/', libraryView.search, name="search"),
     path('userWhoForgotPassword/', libraryView.accountForgotPassword, name="forgotPassword"),
+    path('editForgottenPassword/<str:username>', libraryView.editForgottenPassword, name="editForgottenPassword"),
     path('books/<int:ISBN>', libraryView.viewBook, name="viewBook"),
     path('', libraryView.home, name="library-home"),
 ]

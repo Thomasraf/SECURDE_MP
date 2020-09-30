@@ -118,6 +118,21 @@ def viewBook(request, ISBN):
             'form': form
         }
         return HttpResponseRedirect(request.path_info)
+    if 'addInstance' in request.POST:
+        BookInstance.objects.create(
+            imprint = 'First Edition',
+            id = ISBN,
+            status = 'a'
+        )
+        context = {
+            'details': details, 
+            'bookAvailability': bookinstance_details,
+            'bookBorrow': bookBorrow,
+            'reviews': Review.objects.filter(title=details.title),
+            'user': request.user,
+            'form': form
+        }
+        return HttpResponseRedirect(request.path_info)
     else:
         form = ReviewForm()
         context = {
@@ -264,14 +279,28 @@ def accountForgotPassword(request):
     except:
         username = None
     if username:
-        user = get_object_or_404(User, username = username)
-        context = {'form': PasswordChangeForm(), 'user': user}
-        template = 'changePassword.html'
-        return render(request, template, context)
+        user = User.objects.filter(username = username)
+        context = {'query': username, 'user': user}
+        template = 'changeForgottenPassword.html'
     else:
-        context = {'msg': 'Dont mind this first'}
-        template = 'forgotPassword.html'
-    return render(request, template, context)
+        template: 'forgotPassword.html'
+        context = {}
+    return render(request, 'forgotPassword.html', context)
+
+def editForgottenPassword(request,username):
+    form = ForgotPasswordChangeForm(request.POST)
+    user = User.objects.filter(username=username)
+    details = get_object_or_404(User, username = username)
+    if request.METHOD == 'POST':
+        form = ForgotPasswordChangeForm(request.POST)
+        if form.is_valid():
+            security_answer = request.POST["security_answer"]
+            if security_answer == user.security_answer:
+                details.set_password(request.POST["new_password"])
+                details.save()
+                updated_user = authenticate(request, email=user.email, password=request.POST["new_password"])
+                login(request, updated_user)
+                return redirect('library-home')
 
 def error_400(request,exception):
     return render (request,'400.html')
@@ -284,3 +313,10 @@ def error_404(request,exception):
 
 def error_500(request):
     return render (request,'500.html')
+
+# def viewBook(request, ISBN):
+#     form = ReviewForm(request.POST)
+#     book = Book.objects.filter(ISBN=ISBN)
+#     details = get_object_or_404(Book, ISBN=ISBN)
+#     bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
+#     bookBorrow = BookBorrow.objects.filter(ISBN=ISBN)

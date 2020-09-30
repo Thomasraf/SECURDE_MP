@@ -40,3 +40,18 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ["content"]
+
+class ForgotPasswordForm(forms.ModelForm):
+    username = forms.CharField()
+
+    class Meta:
+        model = User
+        fields = ["username"]
+
+class ForgotPasswordChangeForm(forms.ModelForm):
+    alphanumeric            = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    new_password            = forms.CharField(min_length=6,widget=forms.PasswordInput, validators=[alphanumeric])
+    
+    class Meta:
+        model = User
+        fields = ["security_answer"]
