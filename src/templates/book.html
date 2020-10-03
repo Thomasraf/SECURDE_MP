@@ -13,35 +13,16 @@
     </div>
 </article>
 
-<article class="media content-section">
-    <div class="media-body">
-        {% if bookAvailability.status == 'a' %}
-            <h3>Status:</h3><h3 style="color: green;"> Available</h3>
-        {% endif %}
-        {% if bookAvailability.status == 'o' %}
-            <h3>Status:</h3><h3 style="color: blue;"> On Loan</h3>
-        {% endif %}
-        {% if bookAvailability.status == 'm' %}
-            <h3>Status:</h3><h3 style="color: grey;"> Maintenance</h3>
-        {% endif %}
-        {% if bookAvailability.status == 'r' %}
-            <h3>Status:</h3><h3 style="color: red;"> Reserved</h3>
-        {% endif %}
-    <div>
-</article>
-
-{% if bookAvailability.status == 'a'%}
-{% if user.role == 'regular'%}
+{% if user.role == 'regular' %}
     <article class="media content-section">
         <div class="media-body">
             <form class="form-group" method="POST">
                 {% csrf_token %}
-                <h3>Would you like to borrow this book?</h3>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="borrow" id="borrowButton">Borrow Book</button>
+                <h3>Would you to check the availability of this book?</h3>
+                <a href="http://localhost:8000/bookInstance/{{details.ISBN}}" type="submit" class="btn btn-success">Check availability</a>
             </form>
         <div>
     </article>
-{% endif %}
 {% endif %}
 
 {% if user.role == 'manager' %}
@@ -52,19 +33,32 @@
                     <h2>Username borrowing: {{ bookBorrow.userBorrowing }}</h2>
                     <h3>Borrowed on: {{ bookBorrow.date_borrowed }}</h3>
                     <h3>Due Date: {{ bookBorrow.due_back }}</h3>
+                    <a href="http://localhost:8000/bookInstance/{{details.ISBN}}" type="submit" class="btn btn-success">Make book available</a>
                 <div>
             </article>
         {%endfor%}
     {% endif %}
     <article class="media content-section">
         <div class="media-body">
-            <h2>Add another instance?</h2>
+            <h2>Add/Delete/Edit Instances</h2>
             <form class="form-group" method="POST">
                 {% csrf_token %}
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="addInstance" id="borrowButton">Add Book Instance</button>
+                <a href="http://localhost:8000/bookInstance/{{details.ISBN}}" type="submit" class="btn btn-success">Go to Instances Page</a>
             </form>
         <div>
     </article>
+{% endif %}
+
+{% if user.role == 'manager' %}
+{% for reviews in reviews %}
+<article class="media content-section">
+    <div class="media-body">
+        <h3>User: {{ reviews.userWhoCommented }}</h3>
+        <h4>Comment: {{ reviews.content  }}</h4>
+        <p>Date Posted: {{ reviews.timestamp }}</p>
+    </div>
+</article>
+{% endfor %}
 {% endif %}
 
 {% if user.role == 'regular' %}
@@ -95,11 +89,5 @@
     </div>
 </article>
 {% endfor %}
-
-<form class="form-group" method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="review" id="reviewBook">Leave Review</button>
-</form>
 {% endif %}
 {% endblock content %}

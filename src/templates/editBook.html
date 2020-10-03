@@ -1,0 +1,21 @@
+{%  extends "base.html" %}
+{%  block title %} Adding A Book {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if user.role == 'manager' %}
+    <form class="form-group" method="POST">
+        {% csrf_token %}
+        <h1>Editing A Book From Xavier's Library</h1>
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Edit Book!</button>
+    </form>
+{% else %}
+<article class="media content-section">
+    <div class="media-body">
+        <h3>We are sorry but you are not allowed to do that</h3>
+        <h3>Please contact your Library Manager if you want to add a book!</h3>
+    </div>
+</article>
+{% endif %}
+{% endblock %}

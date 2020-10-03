@@ -51,26 +51,4 @@
     </div>
     </article>
 {% endif %}
-<!-- {% if user.role == 'regular'%}
-    <article class="media content-section">
-        <div class="media-body">
-            <div class="article-metadata">
-                <h1>Borrowed Books:</h1>
-            </div>
-            {% if borrowedBook %}
-            {% for borrowedBook in borrowedBook %}
-                <div class="article-metadata">
-                    <h2><a class="article-title" href="http://localhost:8000/books/{{borrowedBook.ISBN}}">{{ borrowedBook.title }}</a></h2>
-                    <h4>{{ borrowedBook.author }}</h4>
-                    <a href="http://localhost:8000/returnBook/{{borrowedBook.ISBN}}" type="submit" class="btn btn-success">Return Book?</a>
-                </div>
-            {% endfor %}
-            {% else%}
-                <div class="article-metadata">
-                    <h2>You have no borrowed books</h2>
-                </div>
-            {% endif %}
-        </div>
-    </article>
-{% endif %} -->
 {% endblock %}

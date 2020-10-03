@@ -20,9 +20,10 @@ class Book(models.Model):
     
     
 class BookInstance(models.Model):
-    id = models.CharField(max_length=13, primary_key=True)
+    id = models.CharField(max_length=13, default=None,unique=False)
+    ISBN = models.CharField(max_length=13,unique=False)
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True) 
-    imprint = models.CharField(max_length=200)
+    imprint = models.IntegerField(primary_key=True)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -41,9 +42,9 @@ class BookInstance(models.Model):
 
     def __str__(self):
         if self.book:
-            return '%s (%s)' %(self.id, self.book.title)
+            return '%s' %(self.book.title)
         else:
-            return '%s (%s)' %(self.id, self.imprint)
+            return '%s' %(self.imprint)
 
 class BookBorrow(models.Model):
     title = models.CharField(max_length=200, default=None)
@@ -56,22 +57,11 @@ class BookBorrow(models.Model):
     userBorrowing = models.CharField(max_length=200, default=None)
     date_borrowed = models.DateField(default=datetime.now())
     due_back = models.DateField(default=datetime.now() + timedelta(days=15))
+    imprint = models.IntegerField(primary_key=True)
+
 
     def __str__(self):
         return f'{self.title} ({self.userBorrowing})'
-
-# class BookReturn(models.Model):
-#     title = models.CharField(max_length=200, default=None)
-#     author = models.CharField(max_length=200, default=None)
-#     publisher = models.CharField(max_length=100, default=None)
-#     year_of_pub = models.IntegerField(default=None)
-#     description = models.TextField(max_length=1000, default=None)
-#     ISBN = models.CharField(max_length=13, default=None)
-#     dewey_call = models.CharField(max_length=3, default=None)
-#     userReturned = models.CharField(max_length=200, default=None)
-
-#     def __str__(self):
-#         return f'{self.title} ({self.userReturned})'
 
 class Review(models.Model):
     title = models.CharField(max_length=200, default=None)

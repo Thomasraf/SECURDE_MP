@@ -64,8 +64,9 @@ def addBook(request):
                 ISBN = ISBN,
                 dewey_call = dewey_call
             ),
-                imprint = 'First Edition',
-                id = ISBN,
+                imprint = 1,
+                id = 1,
+                ISBN = ISBN,
                 status = 'a'
             )
             return redirect('library-home')
@@ -73,11 +74,102 @@ def addBook(request):
         form = AddBookForm()
     return render(request, "addBook.html", {'form': form})
 
+def editBook(request, ISBN):
+    book = Book.objects.get(ISBN=ISBN)
+    form = EditBookForm(instance=book)
+    if request.method == 'POST':
+        form = EditBookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('library-home')
+    return render(request, "editBook.html", {'form': form})
+
+def addBookInstance(request, ISBN):
+    if request.method == 'POST':
+        form = AddBookInstanceForm(request.POST)
+        if form.is_valid():
+            imprint = request.POST["imprint"]
+            BookInstance.objects.create(
+                book = Book.objects.get(ISBN = ISBN),
+                id = 1,
+                ISBN = ISBN,
+                status = 'a',
+                imprint = imprint
+            )
+            return redirect('library-home')
+    else:
+        form = AddBookInstanceForm()
+    return render(request, "addBookInstance.html", {'form': form})
+
+def editBookInstance(request, ISBN):
+    bookInstance = BookInstance.objects.get(ISBN=ISBN)
+    form = EditBookInstanceForm(instance=bookInstance)
+    if request.method == 'POST':
+        form = EditBookInstanceForm(request.POST, instance=bookInstance)
+        if form.is_valid():
+            if request.POST["status"] == 'a':
+                book = BookBorrow.objects.get(ISBN = ISBN)
+                book.delete()
+                form.save()
+                return redirect('library-home')
+            else:
+                form.save()
+                return redirect('library-home')
+    return render(request, "editBookInstance.html", {'form': form})
+
 def viewBook(request, ISBN):
     form = ReviewForm(request.POST)
     book = Book.objects.filter(ISBN=ISBN)
     details = get_object_or_404(Book, ISBN=ISBN)
-    bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
+    bookBorrow = BookBorrow.objects.filter(ISBN=ISBN)
+    if 'review' in request.POST:
+        content = request.POST["content"]
+        Review.objects.create(
+            title = details.title,
+            userWhoCommented = request.user.username,
+            content = content,
+            timestamp = datetime.now(),
+        )
+        context = {
+            'details': details, 
+            'bookBorrow': bookBorrow,
+            'reviews': Review.objects.filter(title=details.title),
+            'user': request.user,
+            'form': form
+        }
+        return HttpResponseRedirect(request.path_info)
+        book = Book.objects.get(ISBN = ISBN)
+        bookInstance = BookInstance.objects.filter(ISBN = ISBN)
+        bookBorrow = BookBorrow.objects.filter(ISBN = ISBN)
+        book.delete()
+        bookInstance.delete()
+        bookBorrow.delete()
+        context = {
+            'details': details, 
+            'bookAvailability': bookinstance_details,
+            'bookBorrow': bookBorrow,
+            'bookInstances': bookInstances,
+            'reviews': Review.objects.filter(title=details.title),
+            'user': request.user,
+            'form': form
+        }
+        return redirect('library-home')
+    else:
+        form = ReviewForm()
+        context = {
+            'details': details, 
+            'bookBorrow': bookBorrow,
+            'reviews': Review.objects.filter(title=details.title),
+            'user': request.user,
+            'form': form
+        }
+    return render(request, "book.html", context)
+
+def bookInstance(request, ISBN):
+    book = Book.objects.filter(ISBN=ISBN)
+    details = get_object_or_404(Book, ISBN=ISBN)
+    bookInstances = BookInstance.objects.filter(ISBN = ISBN)
+    bookinstance_details = get_object_or_404(BookInstance, ISBN=ISBN)
     bookBorrow = BookBorrow.objects.filter(ISBN=ISBN)
 
     if 'borrow' in request.POST:
@@ -89,7 +181,8 @@ def viewBook(request, ISBN):
                 description = details.description,
                 ISBN = details.ISBN,
                 dewey_call = details.dewey_call,
-                userBorrowing = request.user.username
+                userBorrowing = request.user.username,
+                imprint = bookinstance_details.imprint,
             )
         bookinstance_details.status = 'r'
         bookinstance_details.save()
@@ -97,53 +190,52 @@ def viewBook(request, ISBN):
             'details': details, 
             'bookAvailability': bookinstance_details,
             'bookBorrow': bookBorrow,
+            'bookInstances': bookInstances,
             'reviews': Review.objects.filter(title=details.title),
-            'user': request.user,
-            'form': form
+            'user': request.user
         }
-    if 'review' in request.POST:
-        content = request.POST["content"]
-        Review.objects.create(
-            title = details.title,
-            userWhoCommented = request.user.username,
-            content = content,
-            timestamp = datetime.now(),
-        )
+        return redirect('library-home')
+    if 'no' in request.POST:
+        return redirect('library-home')
+    if 'delete' in request.POST:
+        book = Book.objects.get(ISBN = ISBN)
+        bookInstance = BookInstance.objects.get(ISBN = ISBN)
+        bookBorrow = BookBorrow.objects.filter(ISBN = ISBN)
+        book.delete()
+        bookInstance.delete()
+        bookBorrow.delete()
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
             'bookBorrow': bookBorrow,
+            'bookInstances': bookInstances,
             'reviews': Review.objects.filter(title=details.title),
-            'user': request.user,
-            'form': form
+            'user': request.user
         }
-        return HttpResponseRedirect(request.path_info)
-    if 'addInstance' in request.POST:
-        BookInstance.objects.create(
-            imprint = 'First Edition',
-            id = ISBN,
-            status = 'a'
-        )
+        return redirect('library-home')
+    if 'deleteInstance' in request.POST:
+        bookInstance = BookInstance.objects.get(ISBN = ISBN)
+        bookInstance.delete()
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
             'bookBorrow': bookBorrow,
+            'bookInstances': bookInstances,
             'reviews': Review.objects.filter(title=details.title),
-            'user': request.user,
-            'form': form
+            'user': request.user
         }
-        return HttpResponseRedirect(request.path_info)
+        return redirect('library-home')
     else:
-        form = ReviewForm()
         context = {
             'details': details, 
             'bookAvailability': bookinstance_details,
             'bookBorrow': bookBorrow,
+            'bookInstances': bookInstances,
             'reviews': Review.objects.filter(title=details.title),
-            'user': request.user,
-            'form': form
+            'user': request.user
         }
-    return render(request, "book.html", context)
+    return render(request, "bookInstance.html", context)
+
 
 def returnBook(request, ISBN):
     returnBook = BookBorrow.objects.filter(userBorrowing = request.user.username)
@@ -151,7 +243,7 @@ def returnBook(request, ISBN):
     if 'yes' in request.POST:
         book = BookBorrow.objects.get(ISBN = ISBN)
         book.delete()
-        bookInstance = BookInstance.objects.filter(id = ISBN).update(status="a")
+        bookInstance = BookInstance.objects.filter(ISBN = ISBN).update(status="a")
         context = {
             'user': request.user,
             'returnBook': returnBook
@@ -243,7 +335,6 @@ def accountLogin(request):
     return render(request, "login.html", {'form':form})
 
 def accountProfile(request):
-    # borrowedBook = get_object_or_404(BookBorrow, userBorrowing = request.user.username)
     borrowedBook = BookBorrow.objects.filter(userBorrowing = request.user.username)
     context = {
         'user': request.user,
@@ -313,10 +404,3 @@ def error_404(request,exception):
 
 def error_500(request):
     return render (request,'500.html')
-
-# def viewBook(request, ISBN):
-#     form = ReviewForm(request.POST)
-#     book = Book.objects.filter(ISBN=ISBN)
-#     details = get_object_or_404(Book, ISBN=ISBN)
-#     bookinstance_details = get_object_or_404(BookInstance, id=ISBN)
-#     bookBorrow = BookBorrow.objects.filter(ISBN=ISBN)

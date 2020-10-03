@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Review, Book
+from .models import User, Review, Book, BookInstance
 from django.core.validators import RegexValidator
 
 class RegisterForm(forms.ModelForm):
@@ -26,6 +26,32 @@ class AddBookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ["title", "author", "publisher", "year_of_pub", "description", "ISBN", "dewey_call"]
+
+class EditBookForm(forms.ModelForm):
+    year_of_pub =forms.CharField(label="Year Of Publication")
+    dewey_call  =forms.CharField(label="Dewey Decimal System")
+    
+    class Meta:
+        model = Book
+        fields = ["title", "author", "publisher", "year_of_pub", "description", "ISBN", "dewey_call"]
+
+class AddBookInstanceForm(forms.ModelForm):
+    
+    class Meta:
+        model = BookInstance
+        fields = ["imprint"]
+
+class EditBookInstanceForm(forms.ModelForm):
+    
+    class Meta:
+        model = BookInstance
+        fields = ["status"]
+
+class AddBookInstanceForm404(forms.ModelForm):
+    
+    class Meta:
+        model = BookInstance
+        fields = ["book","imprint"]
 
 class PasswordChangeForm(forms.ModelForm):
     alphanumeric            = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
