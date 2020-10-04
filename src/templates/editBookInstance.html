@@ -1,23 +1,6 @@
 {% extends "base.html" %}
 {%  block title %} Home {% endblock %}
 {% block content %}
-
-{% if user.role == 'regular' %}
-    <article class="media content-section">
-    <div class="media-body">
-    <div class="article-metadata">
-        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
-    <hr>
-{% endif %}
-
-{% if user.is_anonymous %}
-    <article class="media content-section">
-    <div class="media-body">
-    <div class="article-metadata">
-        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
-    <hr>
-{% endif %}
-
 {% if user.role == 'manager' %}
     <article class="media content-section">
     <div class="media-body">
@@ -25,26 +8,22 @@
     <h2>List Of All Book Instances for the book:</h2>
     <h2>{{bookInstance.title}}</h2>
     <hr>
-{% for bookInstance in bookInstance %}    
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <h2><a class="article-title" href="http://localhost:8000/editBookInstanceForm/{{bookInstance.imprint}}/{{bookInstance.ISBN}}">Copy: {{ bookInstance.imprint }}</a></h2>
+    {% for bookInstance in bookInstance %}    
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <h2><a class="article-title" href="http://localhost:8000/editBookInstanceForm/{{bookInstance.imprint}}/{{bookInstance.ISBN}}">Copy: {{ bookInstance.imprint }}</a></h2>
+                    </div>
                 </div>
-            </div>
-        </article>
-{% endfor %}
+            </article>
+    {% endfor %}
     </div>
     </div>
     </article>
-{% endif %}
-
-{% if user.role == 'head' %}
-<article class="media content-section">
+{% else %}
+    <article class="media content-section">
     <div class="media-body">
     <div class="article-metadata">
         <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
-    <hr>
 {% endif %}
-
 {% endblock content %}

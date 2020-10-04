@@ -78,10 +78,14 @@
 {% endif %}
 
 {% if user.role == 'head' %}
-    <button class="createManagerButton"><a href="{% url 'registerManager' %}" class="adminButtons" >Register a manager</a></button>
-    <br>
-    <br>
-    <button class="createManagerButton"><a href="#">View system logs</a></button>
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h2>Admin Options:</h2>
+                <button class="createManagerButton"><a href="{% url 'registerManager' %}" class="adminButtons" >Register a manager</a></button>
+            </div>
+        </div>
+    </article>
 {% endif %}
 
 {% endblock content %}
