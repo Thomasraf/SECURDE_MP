@@ -14,4 +14,8 @@
     </div>
 </article>
 {% endfor %}
+
+{% if user.role == 'manager' %}
+    <h1>you are not allowed to be here</h1>
+{% endif %}
 {% endblock content %}

@@ -2,18 +2,17 @@
 {%  block title %} Book Page {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-<article class="media content-section">
-    <div class="media-body">
-        <h1>{{ details.title }}</h1>
-        <h3>Author: {{ details.author}}</h3>
-        <h4>Published By: {{ details.publisher}}</h4>
-        <p>Book Description: {{ details.description }} </p>
-        <p>Book's ISBN: {{ details.ISBN }}</p>
-        <p>Book's Dewey Decimal: {{ details.dewey_call }}</p>
-    </div>
-</article>
-
 {% if user.role == 'regular' %}
+    <article class="media content-section">
+        <div class="media-body">
+            <h1>{{ details.title }}</h1>
+            <h3>Author: {{ details.author}}</h3>
+            <h4>Published By: {{ details.publisher}}</h4>
+            <p>Book Description: {{ details.description }} </p>
+            <p>Book's ISBN: {{ details.ISBN }}</p>
+            <p>Book's Dewey Decimal: {{ details.dewey_call }}</p>
+        </div>
+    </article>
     <article class="media content-section">
         <div class="media-body">
             <form class="form-group" method="POST">
@@ -26,18 +25,7 @@
 {% endif %}
 
 {% if user.role == 'manager' %}
-    {% if bookAvailability.status == 'r'%}
-        {% for bookBorrow in bookBorrow %}
-            <article class="media content-section">
-                <div class="media-body">
-                    <h2>Username borrowing: {{ bookBorrow.userBorrowing }}</h2>
-                    <h3>Borrowed on: {{ bookBorrow.date_borrowed }}</h3>
-                    <h3>Due Date: {{ bookBorrow.due_back }}</h3>
-                    <a href="http://localhost:8000/bookInstanceManager/{{details.ISBN}}" type="submit" class="btn btn-success">Make book available</a>
-                <div>
-            </article>
-        {%endfor%}
-    {% endif %}
+    <h1>{{ details.title }}</h1>
     <article class="media content-section">
         <div class="media-body">
             <h2>Add/Delete/Edit Instances</h2>
@@ -47,18 +35,6 @@
             </form>
         <div>
     </article>
-{% endif %}
-
-{% if user.role == 'manager' %}
-{% for reviews in reviews %}
-<article class="media content-section">
-    <div class="media-body">
-        <h3>User: {{ reviews.userWhoCommented }}</h3>
-        <h4>Comment: {{ reviews.content  }}</h4>
-        <p>Date Posted: {{ reviews.timestamp }}</p>
-    </div>
-</article>
-{% endfor %}
 {% endif %}
 
 {% if user.role == 'regular' %}
@@ -80,6 +56,16 @@
 {% endif %}
 
 {% if user.is_anonymous %}
+    <article class="media content-section">
+        <div class="media-body">
+            <h1>{{ details.title }}</h1>
+            <h3>Author: {{ details.author}}</h3>
+            <h4>Published By: {{ details.publisher}}</h4>
+            <p>Book Description: {{ details.description }} </p>
+            <p>Book's ISBN: {{ details.ISBN }}</p>
+            <p>Book's Dewey Decimal: {{ details.dewey_call }}</p>
+        </div>
+    </article>
 {% for reviews in reviews %}
 <article class="media content-section">
     <div class="media-body">
