@@ -3,7 +3,8 @@
 - Thomas Rafael Cruz
 - Julian De Castro
 
-#Features of the application
+# Features of the application
+
 [X]User registration/account creation for all user types (teacher, student, and manager)
 [X]Browse/search for books (anonymous user and registered user)
 [X]Borrow a book (teacher and student)
