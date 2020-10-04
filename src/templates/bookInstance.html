@@ -37,6 +37,11 @@
                 <div class="media-body">
                     <div class="article-metadata">
                         <h2><a class="article-title" href="http://localhost:8000/borrowBookInstanceForm/{{bookInstances.imprint}}/{{bookInstances.ISBN}}">Copy: {{ bookInstances.imprint }}</a></h2>
+                        {% if bookInstances.status == 'a' %}
+                            <h3>Book is available to borrow</h3>
+                        {% elif bookInstances.status == 'r' %}
+                            <h3>Book is not available to borrow</h3>
+                        {% endif %}
                     </div>
                 </div>
             </article>
