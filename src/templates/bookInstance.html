@@ -1,5 +1,5 @@
 {%  extends "base.html" %}
-{%  block title %} Profile {% endblock %}
+{%  block title %} Book Instances {% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -24,7 +24,6 @@
     </article>
 {% endif %}
 
-{% if bookAvailability.status == 'a'%}
 {% if user.role == 'regular'%}
     <article class="media content-section">
         <div class="media-body">
@@ -33,35 +32,24 @@
                 <h1>{{ details.title }}?</h1>
             </div>
             <div>
-                <form class="form-group" method="POST">
+            {% for bookInstances in bookInstances %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <h2><a class="article-title" href="http://localhost:8000/borrowBookInstanceForm/{{bookInstances.imprint}}/{{bookInstances.ISBN}}">Copy: {{ bookInstances.imprint }}</a></h2>
+                    </div>
+                </div>
+            </article>
+                <!-- <form class="form-group" method="POST">
                     {% csrf_token %}
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="no" id="noButton">No</button>
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="borrow" id="yesButton">Yes</button>
-                </form>
+                </form> -->
+            {% endfor %}
             </div>
         </div>
     </article>
     {% endif %}
-{% endif %}
-
-{% if bookAvailability.status == 'r'%}
-{% if user.role == 'regular'%}
-    <article class="media content-section">
-        <div class="media-body">
-            <div>
-                <h1>{{ details.title }}?</h1>
-                <h1>This book is already being borrowed</h1>
-            </div>
-            <div>
-                <form class="form-group" method="POST">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="no" id="noButton">Back to home</button>
-                </form>
-            </div>
-        </div>
-    </article>
-    {% endif %}
-{% endif %}
 
 {% if user.role == 'manager'%}
     <article class="media content-section">
@@ -76,7 +64,7 @@
                     <button class="createManagerButton"><a href="http://localhost:8000/addBookInstance/{{details.ISBN}}" class="adminButtons" >Add A Book Instance</a></button>
                     <br>
                     <br>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="deleteInstance" id="borrowButton">Deleting Book Instances</button>
+                    <button class="createManagerButton"><a href="http://localhost:8000/deleteBookInstance/{{details.ISBN}}" class="adminButtons" >Delete A Book Instance</a></button>
                     <br>
                     <br>
                     <button class="createManagerButton"><a href="http://localhost:8000/editBookInstance/{{details.ISBN}}" class="adminButtons" >Edit A Book Instance</a></button>
@@ -105,7 +93,7 @@
             <div>
                 <form class="form-group" method="POST">
                     {% csrf_token %}
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="delete" id="borrowButton">Delete Book</button>
+                    <button class="createManagerButton"><a href="http://localhost:8000/deleteBook/{{details.ISBN}}" class="adminButtons" >Delete Entire Book</a></button>
                 </form>
             </div>
         </div>

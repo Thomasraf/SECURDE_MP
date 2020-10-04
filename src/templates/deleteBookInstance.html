@@ -1,30 +1,50 @@
-{%  extends "base.html" %}
-{%  block title %} Profile {% endblock %}
-{% load crispy_forms_tags %}
-
+{% extends "base.html" %}
+{%  block title %} Home {% endblock %}
 {% block content %}
-{% if user.role == 'manager'%}
+
+{% if user.role == 'regular' %}
     <article class="media content-section">
-        <div class="media-body">
-            <div>
-                <h1>Are You Sure You Want To Return {{ returnBook.title }}?</h1>
+    <div class="media-body">
+    <div class="article-metadata">
+        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
+    <hr>
+{% endif %}
+
+{% if user.is_anonymous %}
+    <article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
+    <hr>
+{% endif %}
+
+{% if user.role == 'manager' %}
+    <article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+    <h2>List Of All Book Instances for the book:</h2>
+    <h2>{{bookInstance.title}}</h2>
+    <hr>
+{% for bookInstance in bookInstance %}    
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h2><a class="article-title" href="http://localhost:8000/deleteBookInstanceForm/{{bookInstance.imprint}}/{{bookInstance.ISBN}}">Copy: {{ bookInstance.imprint }}</a></h2>
+                </div>
             </div>
-            <div>
-                <form class="form-group" method="POST">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="yes" id="yesButton">Yes</button>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="no" id="noButton">No</button>
-                </form>
-            </div>
-        </div>
+        </article>
+{% endfor %}
+    </div>
+    </div>
     </article>
 {% endif %}
-{% else %}
+
+{% if user.role == 'head' %}
 <article class="media content-section">
     <div class="media-body">
-        <h3>We are sorry but you are not allowed to do that</h3>
-        <h3>Please contact your Library Manager if you want to add a book!</h3>
-    </div>
-</article>
+    <div class="article-metadata">
+        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
+    <hr>
 {% endif %}
-{% endblock %}
+
+{% endblock content %}

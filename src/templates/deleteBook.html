@@ -1,0 +1,47 @@
+{%  extends "base.html" %}
+{%  block title %} Book Instances {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if user.is_authenticated%}
+<!-- <article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
+    <hr>
+</article> -->
+{% else %}
+<article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
+    <hr>
+</article>
+{% endif %}
+{% if user.role == 'regular'%}
+<article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+        <h2>You are not allowed to be here, please contact your library manager for inquiries</h2>
+    <hr>
+</article>
+{% endif %}
+
+{% if user.role == 'manager'%}
+<article class="media content-section">
+    <div class="media-body">
+        <div>
+            <h1>Would you like to delete this book:</h1>
+            <h1>{{ details.title }}?</h1>
+        </div>
+        <div>
+            <form class="form-group" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="no" id="noButton">No</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="delete" id="yesButton">Yes</button>
+            </form>
+        </div>
+    </div>
+</article>
+{% endif %}
+{% endblock %}

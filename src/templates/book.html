@@ -33,7 +33,7 @@
                     <h2>Username borrowing: {{ bookBorrow.userBorrowing }}</h2>
                     <h3>Borrowed on: {{ bookBorrow.date_borrowed }}</h3>
                     <h3>Due Date: {{ bookBorrow.due_back }}</h3>
-                    <a href="http://localhost:8000/bookInstance/{{details.ISBN}}" type="submit" class="btn btn-success">Make book available</a>
+                    <a href="http://localhost:8000/bookInstanceManager/{{details.ISBN}}" type="submit" class="btn btn-success">Make book available</a>
                 <div>
             </article>
         {%endfor%}
@@ -43,7 +43,7 @@
             <h2>Add/Delete/Edit Instances</h2>
             <form class="form-group" method="POST">
                 {% csrf_token %}
-                <a href="http://localhost:8000/bookInstance/{{details.ISBN}}" type="submit" class="btn btn-success">Go to Instances Page</a>
+                <a href="http://localhost:8000/bookInstanceManager/{{details.ISBN}}" type="submit" class="btn btn-success">Go to Instances Page</a>
             </form>
         <div>
     </article>

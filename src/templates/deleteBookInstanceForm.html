@@ -1,0 +1,29 @@
+{%  extends "base.html" %}
+{%  block title %} Profile {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if user.role == 'manager'%}
+<article class="media content-section">
+    <div class="media-body">
+        <div>
+            <h1>Would you like to delete this book instance?</h1>
+        </div>
+        <div>
+            <form class="form-group" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="no" id="noButton">No</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="delete" id="yesButton">Yes</button>
+            </form>
+        </div>
+    </div>
+</article>
+{% else %}
+<article class="media content-section">
+    <div class="media-body">
+        <h3>We are sorry but you are not allowed to do that</h3>
+        <h3>Please contact your Library Manager if you want to add a book!</h3>
+    </div>
+</article>
+{% endif %}
+{% endblock %}
